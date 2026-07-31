@@ -248,22 +248,104 @@ const steps = [
   {
     number: "01",
     icon: UsersRound,
-    title: "Crea vuestro grupo",
-    text: "Pareja, amigos, familia o compañeros. Cada plan tiene su propio espacio.",
+    label: "Juntad a los vuestros",
+    title: "Cread vuestro grupo",
+    text: "Pareja, amigos, familia o compañeros. Cada plan empieza reuniendo a las personas que queréis en vuestra mesa.",
   },
   {
     number: "02",
     icon: Compass,
+    label: "Poned opciones sobre la mesa",
     title: "Descubrid y guardad",
     text: "Añadid restaurantes, explorad el mapa y reunid todas las opciones sin perder enlaces.",
   },
   {
     number: "03",
     icon: Check,
-    title: "Decidid sin vueltas",
-    text: "Comparad favoritos y convertid el eterno «me da igual» en el próximo plan.",
+    label: "Todos al mismo sitio",
+    title: "Elegid y disfrutad",
+    text: "Comparad favoritos y convertid el eterno «me da igual» en una mesa reservada y un plan de verdad.",
   },
 ];
+
+function StepsJourney() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <div className={styles.stepsJourney}>
+      <div className={styles.tableThread} aria-hidden="true">
+        {[styles.threadOne, styles.threadTwo, styles.threadThree].map(
+          (segmentClass, index) => (
+            <span
+              className={`${styles.threadSegment} ${segmentClass}`}
+              key={segmentClass}
+            >
+              <motion.i
+                className={styles.threadFabric}
+                initial={reduceMotion ? false : { scaleX: 0 }}
+                whileInView={reduceMotion ? undefined : { scaleX: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{
+                  duration: 0.72,
+                  delay: 0.18 + index * 0.34,
+                  ease,
+                }}
+              />
+            </span>
+          ),
+        )}
+      </div>
+
+      {steps.map((step, index) => {
+        const Icon = step.icon;
+        const positionClass =
+          index === 0
+            ? styles.stepFirst
+            : index === 1
+              ? styles.stepSecond
+              : styles.stepThird;
+
+        return (
+          <motion.article
+            className={`${styles.stepCard} ${positionClass}`}
+            initial={reduceMotion ? false : { opacity: 0, y: 38 }}
+            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            whileHover={reduceMotion ? undefined : { y: -8 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{
+              duration: 0.68,
+              delay: 0.12 + index * 0.14,
+              ease,
+            }}
+            key={step.number}
+          >
+            <div className={styles.stepTop}>
+              <span className={styles.stepPlate}>
+                <Icon size={23} />
+              </span>
+              <span className={styles.stepNumber}>{step.number}</span>
+            </div>
+            <span className={styles.stepLabel}>{step.label}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </motion.article>
+        );
+      })}
+
+      <motion.div
+        className={styles.journeyCaption}
+        initial={reduceMotion ? false : { opacity: 0 }}
+        whileInView={reduceMotion ? undefined : { opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 1.05 }}
+      >
+        <span />
+        De la primera idea al próximo brindis
+        <span />
+      </motion.div>
+    </div>
+  );
+}
 
 function ChatCard() {
   return (
@@ -561,35 +643,17 @@ export function LandingPage() {
         <section className={styles.stepsSection} id="como-funciona">
           <div className={styles.narrowHeading}>
             <Reveal>
-              <span className={styles.eyebrow}>Así de fácil</span>
-              <h2>Tres pasos. Un plan que sí ocurre.</h2>
+              <span className={styles.eyebrow}>
+                El hilo de vuestro próximo plan
+              </span>
+              <h2>Tres pasos. Una mesa que os une.</h2>
               <p>
-                MESA está diseñada para desaparecer en cuanto empieza lo
-                importante: estar juntos.
+                Una idea pasa de persona a persona, recorre toda la mesa y
+                termina donde importa: compartiendo el momento.
               </p>
             </Reveal>
           </div>
-          <div className={styles.stepsGrid}>
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <Reveal
-                  className={styles.stepCard}
-                  delay={index * 0.08}
-                  key={step.number}
-                >
-                  <div className={styles.stepTop}>
-                    <span className={styles.stepIcon}>
-                      <Icon size={22} />
-                    </span>
-                    <span className={styles.stepNumber}>{step.number}</span>
-                  </div>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </Reveal>
-              );
-            })}
-          </div>
+          <StepsJourney />
         </section>
 
         <section className={styles.featuresSection} id="dentro-de-mesa">
