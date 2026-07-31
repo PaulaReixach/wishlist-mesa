@@ -643,163 +643,171 @@ function ChatCard() {
   );
 }
 
-function FeatureGrid() {
+function SharedPlanShowcase() {
   return (
-    <div className={styles.featureGrid}>
-      <Reveal className={`${styles.featureCard} ${styles.mapFeature}`}>
-        <div className={styles.featureCopy}>
-          <span className={styles.miniEyebrow}>
-            <MapPin size={14} /> Descubre
-          </span>
-          <h3>Una ciudad llena de próximos favoritos.</h3>
-          <p>
-            Explora restaurantes cerca de ti y encuentra ese sitio que todavía
-            no sabíais que estabais buscando.
-          </p>
-        </div>
-        <div className={styles.mapCanvas}>
-          <iframe
-            title="Mapa de restaurantes en Girona"
-            src="https://www.google.com/maps?q=restaurantes%20en%20Girona%2C%20Espa%C3%B1a&z=14&output=embed"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            tabIndex={-1}
-          />
-          <div className={styles.mapResult}>
-            <div className={styles.mapResultArt}>
-              <Image
-                src="/images/mesa-mediterranean-table.webp"
-                alt="Platos de La Terrassa"
-                width={100}
-                height={100}
-              />
-            </div>
-            <span>
-              <strong>La Terrassa</strong>
-              <small>4,8 · Mediterránea</small>
-            </span>
-            <Heart size={16} />
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal
-        className={`${styles.featureCard} ${styles.groupsFeature}`}
-        delay={0.05}
-      >
+    <Reveal className={styles.sharedPlanShowcase}>
+      <div className={styles.featureEditorial}>
         <span className={styles.miniEyebrow}>
-          <UsersRound size={14} /> Tus personas
+          <UsersRound size={14} /> Un espacio para todos
         </span>
-        <h3>Un grupo para cada historia.</h3>
+        <h3>Lo que encuentra uno, lo disfruta todo el grupo.</h3>
         <p>
-          Lo que guardas con tu pareja no se mezcla con la cena de cumpleaños.
+          Cada plan reúne las personas, los restaurantes y la decisión final
+          en un único lugar. Claro, compartido y siempre al día.
         </p>
-        <div className={styles.groupList}>
+
+        <div className={styles.featureBenefits}>
           <div>
-            <span className={styles.groupListImage}>
-              <Image
-                src="/images/mesa-mediterranean-table.webp"
-                alt="Plan de viernes"
-                width={90}
-                height={90}
-              />
+            <span className={styles.featureBenefitIcon}>
+              <Compass size={17} />
             </span>
             <span>
+              <strong>Descubrid sin perder el hilo</strong>
+              <small>Todo lo interesante queda a mano.</small>
+            </span>
+          </div>
+          <div>
+            <span className={styles.featureBenefitIcon}>
+              <Heart size={17} />
+            </span>
+            <span>
+              <strong>Guardad en el grupo correcto</strong>
+              <small>Cada plan mantiene su propia selección.</small>
+            </span>
+          </div>
+          <div>
+            <span className={styles.featureBenefitIcon}>
+              <Check size={17} />
+            </span>
+            <span>
+              <strong>Decidid con todo delante</strong>
+              <small>Coincidencias claras, menos vueltas.</small>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.groupBoard}>
+        <div className={styles.boardHeader}>
+          <div className={styles.boardIdentity}>
+            <span className={styles.boardMark}>
+              <Utensils size={16} />
+            </span>
+            <span>
+              <small>Tu grupo</small>
               <strong>Plan de viernes</strong>
-              <small>8 sitios por probar</small>
             </span>
+          </div>
+          <div className={styles.boardPeople}>
             <AvatarStack small />
-          </div>
-          <div>
-            <span className={styles.groupListImage}>
-              <Image
-                src="/images/mesa-japanese-table.webp"
-                alt="Plan en pareja"
-                width={90}
-                height={90}
-              />
-            </span>
-            <span>
-              <strong>Parejita</strong>
-              <small>12 sitios por probar</small>
-            </span>
-            <AvatarStack small twoOnly />
+            <span>5 personas</span>
           </div>
         </div>
-      </Reveal>
 
-      <Reveal
-        className={`${styles.featureCard} ${styles.savedFeature}`}
-        delay={0.08}
-      >
-        <div className={styles.savedTop}>
-          <span className={styles.miniEyebrow}>
-            <Heart size={14} /> Sin perder nada
-          </span>
-          <span className={styles.savedCount}>12 guardados</span>
-        </div>
-        <h3>Ese restaurante ya no se pierde en el chat.</h3>
-        <div className={styles.savedCards}>
-          <div className={styles.savedBack}>
-            <span>Can Mar</span>
-          </div>
-          <div className={styles.savedMiddle}>
-            <span>Casa Nómada</span>
-          </div>
-          <div className={styles.savedFront}>
-            <div className={styles.savedArt}>
-              <Image
-                src="/images/mesa-japanese-table.webp"
-                alt="Platos de La Terrassa"
-                width={148}
-                height={148}
-              />
+        <div className={styles.boardBody}>
+          <div className={styles.boardSelection}>
+            <div className={styles.boardSectionTitle}>
+              <span>
+                <small>Selección compartida</small>
+                <strong>Los favoritos del grupo</strong>
+              </span>
+              <span className={styles.boardSavedCount}>8 guardados</span>
             </div>
-            <span>
-              <strong>La Terrassa</strong>
-              <small>Guardado en Parejita</small>
-            </span>
-            <Heart size={17} fill="currentColor" />
-          </div>
-        </div>
-      </Reveal>
 
-      <Reveal
-        className={`${styles.featureCard} ${styles.decisionFeature}`}
-        delay={0.12}
-      >
-        <span className={styles.miniEyebrow}>
-          <Sparkles size={14} /> Plan resuelto
-        </span>
-        <h3>Menos “ya veremos”. Más reservas.</h3>
-        <p>Las opciones favoritas del grupo, claras y listas para decidir.</p>
-        <div className={styles.decisionList}>
-          <div>
-            <span className={styles.rank}>1</span>
-            <span>
-              <strong>Casa Nómada</strong>
-              <small>Mediterránea · €€</small>
-            </span>
-            <span className={styles.match}>
-              <Heart size={13} fill="currentColor" /> 4
-            </span>
+            <div className={styles.restaurantPair}>
+              <motion.article
+                className={styles.restaurantChoice}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.22, ease }}
+              >
+                <div className={styles.restaurantChoiceImage}>
+                  <Image
+                    src="/images/mesa-mediterranean-table.webp"
+                    alt="Mesa mediterránea de Casa Nómada"
+                    fill
+                    sizes="(max-width: 860px) 72vw, 270px"
+                  />
+                  <span className={styles.restaurantMatch}>
+                    <Heart size={12} fill="currentColor" /> 4 de 5
+                  </span>
+                </div>
+                <div className={styles.restaurantChoiceCopy}>
+                  <span>
+                    <strong>Casa Nómada</strong>
+                    <small>Mediterránea · €€</small>
+                  </span>
+                  <ChevronRight size={17} />
+                </div>
+              </motion.article>
+
+              <motion.article
+                className={styles.restaurantChoice}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.22, ease }}
+              >
+                <div className={styles.restaurantChoiceImage}>
+                  <Image
+                    src="/images/mesa-japanese-table.webp"
+                    alt="Mesa japonesa de Umami Club"
+                    fill
+                    sizes="(max-width: 860px) 72vw, 270px"
+                  />
+                  <span className={styles.restaurantMatch}>
+                    <Heart size={12} fill="currentColor" /> 3 de 5
+                  </span>
+                </div>
+                <div className={styles.restaurantChoiceCopy}>
+                  <span>
+                    <strong>Umami Club</strong>
+                    <small>Japonesa · €€</small>
+                  </span>
+                  <ChevronRight size={17} />
+                </div>
+              </motion.article>
+            </div>
+
+            <div className={styles.boardActivity}>
+              <span className={styles.activityAvatar}>
+                <Image
+                  src="/images/avatar-ana.webp"
+                  alt="Ana"
+                  width={34}
+                  height={34}
+                />
+              </span>
+              <span>
+                <strong>Ana ha guardado Casa Nómada</strong>
+                <small>Ahora mismo</small>
+              </span>
+              <span className={styles.activityLive}>
+                <i /> En directo
+              </span>
+            </div>
           </div>
-          <div>
-            <span className={styles.rank}>2</span>
-            <span>
-              <strong>Umami Club</strong>
-              <small>Japonesa · €€</small>
+
+          <aside className={styles.nextPlan}>
+            <span className={styles.nextPlanLabel}>
+              <Sparkles size={13} /> Próximo plan
             </span>
-            <span className={styles.match}>
-              <Heart size={13} fill="currentColor" /> 3
-            </span>
-          </div>
-          <button type="button">
-            Ver opciones <ArrowRight size={15} />
-          </button>
+            <div className={styles.nextPlanDate}>
+              <strong>26</strong>
+              <span>SEP</span>
+            </div>
+            <div>
+              <h4>Casa Nómada</h4>
+              <p>Viernes · 21:30</p>
+            </div>
+            <div className={styles.nextPlanPeople}>
+              <AvatarStack small />
+              <span>Todos dentro</span>
+            </div>
+            <div className={styles.planConfirmed}>
+              <Check size={15} /> Plan cerrado
+            </div>
+          </aside>
         </div>
-      </Reveal>
-    </div>
+      </div>
+    </Reveal>
   );
 }
 
@@ -909,15 +917,16 @@ export function LandingPage() {
         <section className={styles.featuresSection} id="dentro-de-mesa">
           <div className={styles.featuresHeading}>
             <Reveal>
-              <span className={styles.eyebrow}>Todo en su sitio</span>
-              <h2>Hecha para compartir el plan, no el caos.</h2>
+              <span className={styles.eyebrow}>Dentro de MESA</span>
+              <h2>
+                Todo el plan, <em>en el mismo sitio.</em>
+              </h2>
               <p>
-                Una experiencia sencilla por fuera y pensada al detalle por
-                dentro.
+                Sin enlaces perdidos, listas duplicadas ni decisiones a medias.
               </p>
             </Reveal>
           </div>
-          <FeatureGrid />
+          <SharedPlanShowcase />
         </section>
 
         <section className={styles.storySection}>
