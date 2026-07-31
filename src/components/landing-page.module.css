@@ -700,7 +700,6 @@
 
 .problemCopy h2,
 .narrowHeading h2,
-.featuresHeading h2,
 .storyCopy h2,
 .faqHeading h2 {
   margin-top: 16px;
@@ -1283,13 +1282,6 @@
   padding: 130px 24px;
 }
 
-.featuresHeading p {
-  margin-top: 18px;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
 .stepsSection {
   background: var(--cream-50);
 }
@@ -1492,468 +1484,174 @@
 .featuresSection {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(217, 120, 95, 0.11), transparent 30%),
-    var(--cream-100);
-}
-
-.featuresHeading {
-  max-width: 780px;
-  margin: 0 auto 62px;
-  text-align: center;
-}
-
-.featuresHeading h2 em {
-  color: var(--terracotta-500);
-  font-weight: inherit;
+  padding: 130px 24px;
+  background: var(--cream-100);
 }
 
 .sharedPlanShowcase {
-  display: grid;
   width: min(1160px, 100%);
-  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.55fr);
-  align-items: center;
-  gap: clamp(44px, 6vw, 82px);
   margin: 0 auto;
 }
 
-.featureEditorial h3 {
-  max-width: 410px;
-  margin-top: 19px;
-  color: var(--wine-900);
-  font-family: var(--font-display), serif;
-  font-size: clamp(2.2rem, 3.7vw, 3.25rem);
-  font-weight: 570;
-  letter-spacing: -0.05em;
-  line-height: 1.04;
-}
-
-.featureEditorial > p {
-  max-width: 400px;
-  margin-top: 19px;
-  color: var(--muted);
-  font-size: 0.91rem;
-  line-height: 1.72;
-}
-
-.miniEyebrow {
-  font-size: 0.64rem;
-  letter-spacing: 0.09em;
-}
-
-.featureBenefits {
-  display: grid;
-  gap: 3px;
-  margin-top: 32px;
-}
-
-.featureBenefits > div {
-  display: grid;
-  grid-template-columns: 39px 1fr;
-  align-items: center;
-  gap: 13px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(72, 38, 43, 0.1);
-}
-
-.featureBenefitIcon {
-  display: grid;
-  width: 39px;
-  height: 39px;
-  place-items: center;
-  color: var(--terracotta-600);
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(72, 38, 43, 0.08);
-  border-radius: 12px;
-  transition:
-    color 180ms ease,
-    background 180ms ease,
-    transform 180ms ease;
-}
-
-.featureBenefits > div:hover .featureBenefitIcon {
-  color: var(--white);
-  background: var(--terracotta-500);
-  transform: translateX(3px);
-}
-
-.featureBenefits strong,
-.featureBenefits small {
-  display: block;
-}
-
-.featureBenefits strong {
-  color: var(--wine-900);
-  font-size: 0.76rem;
-}
-
-.featureBenefits small {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 0.63rem;
-}
-
-.groupBoard {
-  min-width: 0;
+.sharedPlanImage {
+  position: relative;
+  min-height: clamp(570px, 56vw, 660px);
   overflow: hidden;
-  color: var(--cream-50);
   background: var(--wine-900);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 30px;
-  box-shadow: 0 32px 70px rgba(47, 23, 27, 0.2);
+  border-radius: 34px;
+  box-shadow: 0 32px 80px rgba(47, 23, 27, 0.18);
+  isolation: isolate;
 }
 
-.boardHeader {
-  display: flex;
-  min-height: 78px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 15px 19px;
-  background: rgba(255, 255, 255, 0.045);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+.sharedPlanImage > img {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.boardIdentity,
-.boardPeople {
-  display: flex;
-  align-items: center;
-  gap: 11px;
+.sharedPlanImage:hover > img {
+  transform: scale(1.015);
 }
 
-.boardMark {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
+.sharedPlanShade {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(35, 15, 19, 0.9) 0%,
+      rgba(35, 15, 19, 0.66) 37%,
+      rgba(35, 15, 19, 0.08) 68%,
+      transparent 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(35, 15, 19, 0.54) 0%,
+      transparent 42%
+    );
+}
+
+.sharedPlanCopy {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: clamp(34px, 6vw, 76px);
+  width: min(390px, calc(100% - 68px));
   color: var(--white);
-  background: var(--terracotta-500);
-  border-radius: 13px;
+  transform: translateY(-50%);
 }
 
-.boardIdentity small,
-.boardIdentity strong {
-  display: block;
-}
-
-.boardIdentity small {
-  margin-bottom: 4px;
-  color: rgba(255, 255, 255, 0.44);
-  font-size: 0.55rem;
-}
-
-.boardIdentity strong {
-  font-family: var(--font-display), serif;
-  font-size: 1rem;
-  font-weight: 620;
-}
-
-.boardPeople {
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 0.58rem;
-  font-weight: 700;
-}
-
-.boardPeople .avatarStack > span,
-.nextPlanPeople .avatarStack > span {
-  border-color: var(--wine-900);
-}
-
-.boardBody {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 176px;
-  gap: 14px;
-  padding: 18px;
-}
-
-.boardSelection {
-  min-width: 0;
-  padding: 19px;
-  color: var(--ink);
-  background: var(--cream-50);
-  border-radius: 20px;
-}
-
-.boardSectionTitle {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.boardSectionTitle small,
-.boardSectionTitle strong {
-  display: block;
-}
-
-.boardSectionTitle small {
-  margin-bottom: 5px;
-  color: var(--terracotta-600);
-  font-size: 0.55rem;
-  font-weight: 800;
-  letter-spacing: 0.07em;
+.sharedPlanEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  color: var(--cream-50);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  font-size: 0.68rem;
+  font-weight: 780;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.boardSectionTitle strong {
-  color: var(--wine-900);
+.sharedPlanCopy h2 {
+  margin-top: 24px;
   font-family: var(--font-display), serif;
-  font-size: 1.2rem;
-  font-weight: 620;
-  letter-spacing: -0.025em;
+  font-size: clamp(3.2rem, 5vw, 4.6rem);
+  font-weight: 540;
+  letter-spacing: -0.06em;
+  line-height: 0.96;
 }
 
-.boardSavedCount {
-  flex: 0 0 auto;
-  padding: 6px 9px;
-  color: var(--muted);
-  font-size: 0.58rem;
-  font-weight: 750;
-  background: var(--cream-100);
-  border-radius: 999px;
+.sharedPlanCopy h2 em {
+  display: block;
+  margin-top: 7px;
+  color: #f4c8ba;
+  font-weight: inherit;
 }
 
-.restaurantPair {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 18px;
+.sharedPlanCopy > p {
+  max-width: 390px;
+  margin-top: 24px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.96rem;
+  line-height: 1.7;
 }
 
-.restaurantChoice {
-  min-width: 0;
-  overflow: hidden;
-  background: var(--white);
-  border: 1px solid rgba(72, 38, 43, 0.09);
-  border-radius: 15px;
-  box-shadow: 0 8px 22px rgba(72, 38, 43, 0.07);
-}
-
-.restaurantChoiceImage {
-  position: relative;
-  height: 126px;
-  overflow: hidden;
-}
-
-.restaurantChoiceImage img {
-  object-fit: cover;
-  transition: transform 450ms ease;
-}
-
-.restaurantChoice:hover .restaurantChoiceImage img {
-  transform: scale(1.04);
-}
-
-.restaurantMatch {
+.sharedPlanCard {
   position: absolute;
-  top: 9px;
-  right: 9px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 8px;
-  color: var(--white);
-  background: rgba(47, 23, 27, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-  backdrop-filter: blur(8px);
-  font-size: 0.53rem;
-  font-weight: 800;
+  z-index: 3;
+  right: 28px;
+  bottom: 28px;
+  width: 306px;
+  padding: 20px;
+  color: var(--ink);
+  background: rgba(255, 253, 248, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 20px;
+  box-shadow: 0 22px 54px rgba(28, 12, 15, 0.24);
+  backdrop-filter: blur(18px);
 }
 
-.restaurantMatch svg {
-  color: var(--terracotta-400);
-}
-
-.restaurantChoiceCopy {
+.sharedPlanCardTop {
   display: flex;
-  min-height: 58px;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 10px 11px;
-  color: var(--terracotta-500);
-}
-
-.restaurantChoiceCopy strong,
-.restaurantChoiceCopy small {
-  display: block;
-}
-
-.restaurantChoiceCopy strong {
-  margin-bottom: 4px;
-  color: var(--wine-900);
-  font-size: 0.67rem;
-}
-
-.restaurantChoiceCopy small {
+  gap: 12px;
+  margin-bottom: 17px;
   color: var(--muted);
-  font-size: 0.52rem;
+  font-size: 0.58rem;
+  font-weight: 760;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.boardActivity {
-  display: grid;
-  min-height: 55px;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  margin-top: 11px;
-  padding: 9px 10px;
-  background: #f1ecdf;
-  border-radius: 13px;
-}
-
-.activityAvatar {
-  width: 34px;
-  height: 34px;
-  overflow: hidden;
-  border-radius: 50%;
-}
-
-.activityAvatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.boardActivity strong,
-.boardActivity small {
-  display: block;
-}
-
-.boardActivity strong {
-  color: var(--wine-900);
-  font-size: 0.62rem;
-}
-
-.boardActivity small {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 0.5rem;
-}
-
-.activityLive {
+.sharedPlanConfirmed {
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  padding: 6px 8px;
   color: var(--olive-700);
-  font-size: 0.5rem;
-  font-weight: 800;
+  background: rgba(124, 132, 96, 0.11);
+  border-radius: 999px;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
-.activityLive i {
-  width: 6px;
-  height: 6px;
-  background: #7c9454;
-  border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(124, 148, 84, 0.42);
-  animation: activityPulse 2.2s infinite;
-}
-
-.nextPlan {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 20px 17px 17px;
-  color: var(--cream-50);
-  background:
-    radial-gradient(circle at 95% 5%, rgba(217, 120, 95, 0.27), transparent 38%),
-    var(--wine-800);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 20px;
-}
-
-.nextPlanLabel {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--terracotta-400);
-  font-size: 0.53rem;
-  font-weight: 850;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.nextPlanDate {
-  display: grid;
-  width: 65px;
-  height: 70px;
-  place-content: center;
-  margin-top: 31px;
-  color: var(--wine-900);
-  background: var(--cream-50);
-  border-radius: 17px;
-  text-align: center;
-  transform: rotate(-2deg);
-}
-
-.nextPlanDate strong,
-.nextPlanDate span {
+.sharedPlanCard > strong {
   display: block;
-}
-
-.nextPlanDate strong {
-  font-family: var(--font-display), serif;
-  font-size: 1.65rem;
-  line-height: 1;
-}
-
-.nextPlanDate span {
-  margin-top: 4px;
-  color: var(--terracotta-600);
-  font-size: 0.5rem;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-}
-
-.nextPlan h4 {
-  margin-top: 22px;
-  font-family: var(--font-display), serif;
-  font-size: 1.23rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-
-.nextPlan p {
-  margin-top: 6px;
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 0.58rem;
-}
-
-.nextPlanPeople {
-  display: grid;
-  gap: 7px;
-  margin-top: auto;
-  padding-top: 26px;
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 0.54rem;
-  font-weight: 700;
-}
-
-.planConfirmed {
-  display: flex;
-  width: 100%;
-  min-height: 36px;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 13px;
   color: var(--wine-900);
-  background: var(--cream-50);
-  border-radius: 11px;
-  font-size: 0.57rem;
-  font-weight: 850;
+  font-family: var(--font-display), serif;
+  font-size: 1.72rem;
+  font-weight: 620;
+  letter-spacing: -0.035em;
 }
 
-@keyframes activityPulse {
-  70% {
-    box-shadow: 0 0 0 7px rgba(124, 148, 84, 0);
-  }
+.sharedPlanCard > p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.74rem;
+}
 
-  100% {
-    box-shadow: 0 0 0 0 rgba(124, 148, 84, 0);
-  }
+.sharedPlanPeople {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 15px;
+  color: var(--wine-900);
+  border-top: 1px solid rgba(72, 38, 43, 0.1);
+  font-size: 0.66rem;
+  font-weight: 760;
+}
+
+.sharedPlanPeople .avatarStack > span {
+  border-color: var(--cream-50);
 }
 
 .storySection {
@@ -2251,15 +1949,6 @@
     grid-template-columns: minmax(235px, 0.58fr) minmax(0, 1.42fr);
   }
 
-  .sharedPlanShowcase {
-    grid-template-columns: minmax(235px, 0.66fr) minmax(0, 1.34fr);
-    gap: 34px;
-  }
-
-  .boardBody {
-    grid-template-columns: minmax(0, 1fr) 155px;
-  }
-
   .storyCard {
     grid-template-columns: 130px 1fr;
   }
@@ -2362,39 +2051,42 @@
   }
 
 
-  .sharedPlanShowcase {
-    grid-template-columns: 1fr;
-    max-width: 700px;
+  .sharedPlanImage {
+    min-height: 720px;
   }
 
-  .featureEditorial {
-    max-width: 650px;
-    margin: 0 auto;
-    text-align: center;
+  .sharedPlanImage > img {
+    object-position: 62% center;
   }
 
-  .featureEditorial h3,
-  .featureEditorial > p {
-    max-width: 610px;
-    margin-right: auto;
-    margin-left: auto;
+  .sharedPlanShade {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(35, 15, 19, 0.82) 0%,
+        rgba(35, 15, 19, 0.38) 44%,
+        rgba(35, 15, 19, 0.7) 100%
+      ),
+      linear-gradient(90deg, rgba(35, 15, 19, 0.45), transparent 76%);
   }
 
-  .featureBenefits {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+  .sharedPlanCopy {
+    top: 42px;
+    right: 38px;
+    left: 38px;
+    width: auto;
+    transform: none;
   }
 
-  .featureBenefits > div {
-    grid-template-columns: 1fr;
-    align-content: start;
-    justify-items: center;
-    gap: 10px;
-    padding: 16px 10px;
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(72, 38, 43, 0.08);
-    border-radius: 16px;
-    text-align: center;
+  .sharedPlanCopy h2 {
+    max-width: 570px;
+    font-size: clamp(3.3rem, 9vw, 4.8rem);
+  }
+
+  .sharedPlanCard {
+    right: auto;
+    bottom: 30px;
+    left: 30px;
   }
 }
 
@@ -2476,7 +2168,6 @@
 
   .problemCopy h2,
   .narrowHeading h2,
-  .featuresHeading h2,
   .storyCopy h2,
   .faqHeading h2 {
     font-size: clamp(2.2rem, 11vw, 3rem);
@@ -2609,111 +2300,64 @@
     font-size: 0.74rem;
   }
 
-  .featuresHeading {
-    margin-bottom: 46px;
+  .sharedPlanImage {
+    min-height: 810px;
+    border-radius: 24px;
+    background: var(--wine-900);
   }
 
-  .sharedPlanShowcase {
-    gap: 38px;
+  .sharedPlanImage > img {
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 360px !important;
+    object-position: 64% center;
   }
 
-  .featureEditorial {
-    text-align: left;
+  .sharedPlanCopy {
+    top: 390px;
+    right: 24px;
+    left: 24px;
   }
 
-  .featureBenefits {
-    grid-template-columns: 1fr;
-    gap: 0;
+  .sharedPlanShade {
+    bottom: auto;
+    height: 360px;
+    background: linear-gradient(
+      0deg,
+      rgba(47, 23, 27, 0.74) 0%,
+      rgba(47, 23, 27, 0.08) 48%,
+      transparent 100%
+    );
   }
 
-  .featureBenefits > div {
-    grid-template-columns: 39px 1fr;
-    justify-items: stretch;
-    padding: 12px 0;
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid rgba(72, 38, 43, 0.1);
-    border-radius: 0;
-    text-align: left;
+  .sharedPlanEyebrow {
+    font-size: 0.61rem;
   }
 
-  .groupBoard {
-    border-radius: 23px;
+  .sharedPlanCopy h2 {
+    margin-top: 19px;
+    font-size: clamp(2.65rem, 13vw, 3.7rem);
   }
 
-  .boardHeader {
-    min-height: 70px;
-    padding: 12px 13px;
+  .sharedPlanCopy > p {
+    max-width: 330px;
+    margin-top: 18px;
+    font-size: 0.82rem;
   }
 
-  .boardPeople > span:last-child {
-    display: none;
-  }
-
-  .boardBody {
-    grid-template-columns: 1fr;
-    padding: 12px;
-  }
-
-  .boardSelection {
-    padding: 15px;
-    border-radius: 16px;
-  }
-
-  .boardSectionTitle {
-    align-items: flex-start;
-  }
-
-  .boardSectionTitle strong {
-    font-size: 1.05rem;
-  }
-
-  .restaurantChoiceImage {
-    height: 112px;
-  }
-
-  .activityLive {
-    font-size: 0;
-  }
-
-  .nextPlan {
-    display: grid;
-    grid-template-columns: 58px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    padding: 13px;
-    border-radius: 16px;
-  }
-
-  .nextPlanLabel {
-    grid-column: 1 / 4;
-  }
-
-  .nextPlanDate {
-    width: 54px;
-    height: 58px;
-    margin-top: 0;
-    border-radius: 14px;
-  }
-
-  .nextPlanDate strong {
-    font-size: 1.4rem;
-  }
-
-  .nextPlan h4 {
-    margin-top: 0;
-    font-size: 1.05rem;
-  }
-
-  .nextPlanPeople {
-    display: none;
-  }
-
-  .planConfirmed {
+  .sharedPlanCard {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
     width: auto;
-    min-height: 34px;
-    margin-top: 0;
-    padding: 0 10px;
+    padding: 17px;
+    border-radius: 17px;
+  }
+
+  .sharedPlanCard > strong {
+    font-size: 1.5rem;
   }
 
   .storyCard {
@@ -2789,16 +2433,4 @@
     left: -10px;
   }
 
-  .boardSavedCount {
-    display: none;
-  }
-
-  .planConfirmed {
-    font-size: 0;
-  }
-
-  .planConfirmed svg {
-    width: 16px;
-    height: 16px;
-  }
 }
