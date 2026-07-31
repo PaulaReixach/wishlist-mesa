@@ -1042,7 +1042,7 @@
 
 .chatRecommendation {
   align-self: flex-start;
-  width: calc(100% - 36px);
+  width: min(420px, calc(100% - 36px));
   margin-left: 36px;
   overflow: hidden;
   background: var(--white);
@@ -1055,7 +1055,7 @@
 
 .recommendationVisual {
   position: relative;
-  height: 168px;
+  height: 150px;
   overflow: hidden;
   background: var(--wine-900);
 }
@@ -1151,7 +1151,7 @@
 
 .recommendationFooter {
   display: flex;
-  min-height: 62px;
+  min-height: 58px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -2399,12 +2399,12 @@
   }
 
   .chatRecommendation {
-    width: calc(100% - 34px);
+    width: min(390px, calc(100% - 42px));
     margin-left: 34px;
   }
 
   .recommendationVisual {
-    height: 148px;
+    height: 138px;
   }
 
   .recommendationFooter {
