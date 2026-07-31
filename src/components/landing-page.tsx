@@ -24,11 +24,9 @@ import {
   Plus,
   Search,
   SendHorizontal,
-  Sparkles,
   Star,
   UserRound,
   UsersRound,
-  Utensils,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MesaLogo, MesaMark } from "@/components/brand";
@@ -805,24 +803,24 @@ export function LandingPage() {
         <section className={styles.storySection}>
           <div className={styles.storyPattern} aria-hidden="true" />
           <Reveal className={styles.storyCard}>
-            <div className={styles.lunaWrap}>
-              <MesaMark className={styles.lunaMark} />
-              <span className={styles.lunaSpark}>
-                <Sparkles size={18} />
+            <div className={styles.mapWrap}>
+              <Map className={styles.mapIcon} />
+              <span className={styles.mapPin}>
+                <MapPin size={18} />
               </span>
             </div>
             <div className={styles.storyCopy}>
-              <span className={styles.eyebrow}>Conoce a Luna</span>
-              <h2>Una app con ganas de sentarse a vuestra mesa.</h2>
+              <span className={styles.eyebrow}>Explorad el mapa</span>
+              <h2>Vuestro próximo restaurante, siempre a la vista.</h2>
               <p>
-                Luna, nuestra panda roja, acompaña cada descubrimiento. MESA
-                nace de algo muy sencillo: los planes compartidos merecen una
-                forma más bonita de empezar.
+                Descubrid qué tenéis cerca o explorad cualquier zona desde el
+                mapa. Guardad los sitios que os gusten en vuestro grupo y
+                volved a encontrarlos cuando llegue el momento de decidir.
               </p>
             </div>
             <div className={styles.storyQuote}>
-              <Utensils size={24} />
-              <p>“El sitio importa. La gente que se sienta contigo, más.”</p>
+              <Compass size={24} />
+              <p>“Explorad por la zona. Guardad lo que os guste. Elegid juntos.”</p>
             </div>
           </Reveal>
         </section>
