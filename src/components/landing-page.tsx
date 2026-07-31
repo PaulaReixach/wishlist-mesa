@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -22,7 +22,7 @@ import {
   UsersRound,
   Utensils,
 } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MesaLogo, MesaMark } from "@/components/brand";
 import { WaitlistForm } from "@/components/waitlist-form";
 import styles from "./landing-page.module.css";
@@ -248,101 +248,268 @@ const steps = [
   {
     number: "01",
     icon: UsersRound,
-    label: "Juntad a los vuestros",
-    title: "Cread vuestro grupo",
-    text: "Pareja, amigos, familia o compañeros. Cada plan empieza reuniendo a las personas que queréis en vuestra mesa.",
+    tab: "Reunid",
+    label: "El punto de partida",
+    title: "Juntad a vuestra gente en un mismo plan.",
+    text: "Cread un grupo para esa cena, escapada o domingo en familia. Todos entran en el mismo espacio desde el primer momento.",
+    benefit: "Un grupo, una wishlist compartida",
   },
   {
     number: "02",
     icon: Compass,
-    label: "Poned opciones sobre la mesa",
-    title: "Descubrid y guardad",
-    text: "Añadid restaurantes, explorad el mapa y reunid todas las opciones sin perder enlaces.",
+    tab: "Explorad",
+    label: "Opciones que no se pierden",
+    title: "Descubrid sitios y guardadlos juntos.",
+    text: "Buscad restaurantes, explorad el mapa y añadid cada descubrimiento al grupo. Sin enlaces perdidos ni capturas olvidadas.",
+    benefit: "Todo lo que os gusta, en un solo lugar",
   },
   {
     number: "03",
     icon: Check,
-    label: "Todos al mismo sitio",
-    title: "Elegid y disfrutad",
-    text: "Comparad favoritos y convertid el eterno «me da igual» en una mesa reservada y un plan de verdad.",
+    tab: "Decidid",
+    label: "El plan toma forma",
+    title: "Encontrad ese sitio que os encaja a todos.",
+    text: "Comparad lo que habéis guardado y ved dónde coinciden vuestros gustos. El eterno «me da igual» por fin termina en un plan.",
+    benefit: "Menos vueltas. Más ganas de quedar",
   },
 ];
 
-function StepsJourney() {
+function GroupPreview() {
+  return (
+    <div className={`${styles.previewShell} ${styles.groupPreview}`}>
+      <Image
+        src="/images/mesa-mediterranean-table.webp"
+        alt="Mesa mediterránea preparada para compartir"
+        fill
+        sizes="(max-width: 860px) 90vw, 600px"
+      />
+      <div className={styles.previewPhotoShade} />
+      <span className={styles.previewStatus}>
+        <UsersRound size={14} /> Nuevo grupo
+      </span>
+      <div className={styles.groupComposer}>
+        <div className={styles.composerHeading}>
+          <div>
+            <span>Vuestro próximo plan</span>
+            <h4>Plan de viernes</h4>
+          </div>
+          <AvatarStack />
+        </div>
+        <div className={styles.memberSummary}>
+          <span className={styles.memberDot} />
+          5 personas ya están dentro
+        </div>
+        <div className={styles.previewAction}>
+          <Plus size={17} />
+          <span>Invitar al grupo</span>
+          <ArrowRight size={17} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DiscoveryPreview() {
+  return (
+    <div className={`${styles.previewShell} ${styles.discoveryPreview}`}>
+      <div className={styles.discoveryHeader}>
+        <div>
+          <span>Wishlist compartida</span>
+          <strong>Plan de viernes</strong>
+        </div>
+        <span className={styles.savedCount}>
+          <Heart size={14} fill="currentColor" /> 8 guardados
+        </span>
+      </div>
+      <div className={styles.candidateGrid}>
+        <article className={styles.candidateCard}>
+          <div className={styles.candidateImage}>
+            <Image
+              src="/images/mesa-mediterranean-table.webp"
+              alt="Platos mediterráneos de Casa Nómada"
+              fill
+              sizes="(max-width: 620px) 42vw, 260px"
+            />
+            <span className={styles.candidateRating}>
+              <Star size={11} fill="currentColor" /> 4,7
+            </span>
+          </div>
+          <div className={styles.candidateInfo}>
+            <strong>Casa Nómada</strong>
+            <span>Mediterránea · €€</span>
+            <small>
+              <MapPin size={12} /> 1,2 km
+            </small>
+          </div>
+        </article>
+        <article className={styles.candidateCard}>
+          <div className={styles.candidateImage}>
+            <Image
+              src="/images/mesa-japanese-table.webp"
+              alt="Platos japoneses de Kinu"
+              fill
+              sizes="(max-width: 620px) 42vw, 260px"
+            />
+            <span className={styles.candidateRating}>
+              <Star size={11} fill="currentColor" /> 4,6
+            </span>
+          </div>
+          <div className={styles.candidateInfo}>
+            <strong>Kinu</strong>
+            <span>Japonesa · €€</span>
+            <small>
+              <MapPin size={12} /> 800 m
+            </small>
+          </div>
+        </article>
+      </div>
+      <div className={styles.savedNote}>
+        <span className={styles.savedNoteAvatar}>
+          <Image
+            src="/images/avatar-ana.webp"
+            alt="Ana"
+            width={30}
+            height={30}
+          />
+        </span>
+        <span>
+          <strong>Ana ha añadido Kinu</strong>
+          <small>Todo el grupo puede verlo</small>
+        </span>
+        <Check size={17} />
+      </div>
+    </div>
+  );
+}
+
+function DecisionPreview() {
+  return (
+    <div className={`${styles.previewShell} ${styles.decisionPreview}`}>
+      <Image
+        src="/images/mesa-mediterranean-table.webp"
+        alt="Mesa de Casa Nómada, restaurante elegido por el grupo"
+        fill
+        sizes="(max-width: 860px) 90vw, 600px"
+      />
+      <div className={styles.decisionShade} />
+      <span className={styles.winnerPill}>
+        <Check size={15} /> Elección del grupo
+      </span>
+      <div className={styles.resultCard}>
+        <div className={styles.resultHeading}>
+          <div>
+            <span>Mediterránea · €€</span>
+            <h4>Casa Nómada</h4>
+            <small>
+              <MapPin size={13} /> Girona · 1,2 km
+            </small>
+          </div>
+          <div className={styles.matchScore}>
+            <strong>4/5</strong>
+            <span>coincidencias</span>
+          </div>
+        </div>
+        <div className={styles.resultFooter}>
+          <AvatarStack />
+          <span>El grupo ya tiene plan</span>
+          <ArrowRight size={18} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepPreview({ activeStep }: { activeStep: number }) {
+  if (activeStep === 0) return <GroupPreview />;
+  if (activeStep === 1) return <DiscoveryPreview />;
+  return <DecisionPreview />;
+}
+
+function StepsExperience() {
   const reduceMotion = useReducedMotion();
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    const timer = window.setTimeout(() => {
+      setActiveStep((current) => (current + 1) % steps.length);
+    }, 5600);
+
+    return () => window.clearTimeout(timer);
+  }, [activeStep, reduceMotion]);
+
+  const active = steps[activeStep];
+  const ActiveIcon = active.icon;
 
   return (
-    <div className={styles.stepsJourney}>
-      <div className={styles.tableThread} aria-hidden="true">
-        {[styles.threadOne, styles.threadTwo, styles.threadThree].map(
-          (segmentClass, index) => (
-            <span
-              className={`${styles.threadSegment} ${segmentClass}`}
-              key={segmentClass}
+    <div className={styles.stepsExperience}>
+      <div className={styles.stepTabs} role="tablist" aria-label="Cómo funciona MESA">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          const selected = index === activeStep;
+
+          return (
+            <button
+              className={`${styles.stepTab} ${selected ? styles.stepTabActive : ""}`}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              aria-controls="mesa-step-scene"
+              onClick={() => setActiveStep(index)}
+              key={step.number}
             >
-              <motion.i
-                className={styles.threadFabric}
-                initial={reduceMotion ? false : { scaleX: 0 }}
-                whileInView={reduceMotion ? undefined : { scaleX: 1 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{
-                  duration: 0.72,
-                  delay: 0.18 + index * 0.34,
-                  ease,
-                }}
-              />
-            </span>
-          ),
-        )}
+              <span className={styles.tabIcon}>
+                <Icon size={18} />
+              </span>
+              <span className={styles.tabCopy}>
+                <small>{step.number}</small>
+                <strong>{step.tab}</strong>
+              </span>
+              {selected && !reduceMotion && (
+                <motion.span
+                  className={styles.tabProgress}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 5.6, ease: "linear" }}
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {steps.map((step, index) => {
-        const Icon = step.icon;
-        const positionClass =
-          index === 0
-            ? styles.stepFirst
-            : index === 1
-              ? styles.stepSecond
-              : styles.stepThird;
-
-        return (
-          <motion.article
-            className={`${styles.stepCard} ${positionClass}`}
-            initial={reduceMotion ? false : { opacity: 0, y: 38 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            whileHover={reduceMotion ? undefined : { y: -8 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{
-              duration: 0.68,
-              delay: 0.12 + index * 0.14,
-              ease,
-            }}
-            key={step.number}
-          >
-            <div className={styles.stepTop}>
-              <span className={styles.stepPlate}>
-                <Icon size={23} />
-              </span>
-              <span className={styles.stepNumber}>{step.number}</span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          className={styles.stepScene}
+          id="mesa-step-scene"
+          role="tabpanel"
+          key={active.number}
+          initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduceMotion ? undefined : { opacity: 0, y: -10 }}
+          transition={{ duration: 0.42, ease }}
+        >
+          <div className={styles.sceneCopy}>
+            <span className={styles.sceneIcon}>
+              <ActiveIcon size={20} />
+            </span>
+            <span className={styles.sceneLabel}>{active.label}</span>
+            <h3>{active.title}</h3>
+            <p>{active.text}</p>
+            <div className={styles.sceneBenefit}>
+              <Check size={16} /> {active.benefit}
             </div>
-            <span className={styles.stepLabel}>{step.label}</span>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
-          </motion.article>
-        );
-      })}
-
-      <motion.div
-        className={styles.journeyCaption}
-        initial={reduceMotion ? false : { opacity: 0 }}
-        whileInView={reduceMotion ? undefined : { opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 1.05 }}
-      >
-        <span />
-        De la primera idea al próximo brindis
-        <span />
-      </motion.div>
+            <div className={styles.sceneCounter} aria-hidden="true">
+              {active.number}
+              <span>/ 03</span>
+            </div>
+          </div>
+          <div className={styles.sceneVisual}>
+            <StepPreview activeStep={activeStep} />
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
@@ -641,19 +808,20 @@ export function LandingPage() {
         </section>
 
         <section className={styles.stepsSection} id="como-funciona">
-          <div className={styles.narrowHeading}>
+          <div className={styles.stepsHeading}>
             <Reveal>
-              <span className={styles.eyebrow}>
-                El hilo de vuestro próximo plan
-              </span>
-              <h2>Tres pasos. Una mesa que os une.</h2>
+              <span className={styles.eyebrow}>Así se vive MESA</span>
+              <h2>Del «¿dónde cenamos?» a tener plan.</h2>
+            </Reveal>
+            <Reveal delay={0.1}>
               <p>
-                Una idea pasa de persona a persona, recorre toda la mesa y
-                termina donde importa: compartiendo el momento.
+                Tres momentos conectados en un mismo sitio. Pulsa cada paso y
+                descubre cómo MESA convierte el caos del chat en un plan que
+                sí sucede.
               </p>
             </Reveal>
           </div>
-          <StepsJourney />
+          <StepsExperience />
         </section>
 
         <section className={styles.featuresSection} id="dentro-de-mesa">
