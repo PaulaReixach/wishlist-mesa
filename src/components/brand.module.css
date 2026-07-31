@@ -1,0 +1,56 @@
+.logo {
+  display: inline-grid;
+  grid-template-columns: 44px auto;
+  grid-template-rows: auto auto;
+  column-gap: 11px;
+  align-items: center;
+  color: var(--wine-900);
+}
+
+.mark {
+  grid-row: 1 / 3;
+  color: var(--terracotta-500);
+}
+
+.wordmark {
+  align-self: end;
+  font-size: 1.08rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.tagline {
+  align-self: start;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.62rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.light {
+  color: var(--cream-50);
+}
+
+.light .mark {
+  color: var(--terracotta-400);
+}
+
+.light .tagline {
+  color: rgba(255, 253, 248, 0.62);
+}
+
+@media (max-width: 460px) {
+  .tagline {
+    display: none;
+  }
+
+  .logo {
+    grid-template-rows: auto;
+  }
+
+  .mark {
+    grid-row: 1;
+  }
+}
