@@ -700,7 +700,6 @@
 
 .problemCopy h2,
 .narrowHeading h2,
-.storyCopy h2,
 .faqHeading h2 {
   margin-top: 16px;
   color: var(--wine-900);
@@ -1656,102 +1655,469 @@
 
 .storySection {
   position: relative;
-  padding: 124px 24px;
+  padding: 128px 24px;
+  overflow: hidden;
   background: var(--cream-50);
 }
 
-.storyPattern {
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  background-image: radial-gradient(
-    rgba(201, 99, 75, 0.2) 1px,
-    transparent 1px
-  );
-  background-size: 22px 22px;
-  mask-image: linear-gradient(90deg, transparent, #000, transparent);
-}
-
-.storyCard {
-  position: relative;
+.mapShowcase {
   display: grid;
-  width: min(1080px, 100%);
-  min-height: 300px;
-  grid-template-columns: 150px 1fr 0.62fr;
-  align-items: center;
-  gap: 42px;
+  width: min(1160px, 100%);
+  min-height: 610px;
+  grid-template-columns: minmax(350px, 0.78fr) minmax(0, 1.22fr);
   margin: 0 auto;
-  padding: 50px;
-  background: var(--white);
-  border: 1px solid rgba(72, 38, 43, 0.09);
-  border-radius: 30px;
-  box-shadow: var(--shadow-soft);
-}
-
-.mapWrap {
-  position: relative;
-  display: grid;
-  width: 140px;
-  height: 140px;
-  place-items: center;
-  background: #f5ded6;
-  border-radius: 42px;
-  transform: rotate(-4deg);
-}
-
-.mapIcon {
-  width: 78px;
-  height: 78px;
-  color: var(--terracotta-500);
-  filter: drop-shadow(0 12px 16px rgba(72, 38, 43, 0.12));
-  transform: rotate(4deg);
-}
-
-.mapPin {
-  position: absolute;
-  top: -13px;
-  right: -12px;
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  color: var(--white);
-  background: var(--olive-700);
-  border: 4px solid var(--white);
-  border-radius: 50%;
-  transform: rotate(4deg);
-}
-
-.storyCopy h2 {
-  max-width: 600px;
-  font-size: clamp(2.1rem, 3.6vw, 3.25rem);
-}
-
-.storyCopy p {
-  max-width: 620px;
-  margin-top: 16px;
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.7;
-}
-
-.storyQuote {
-  padding: 25px;
-  color: var(--cream-50);
+  overflow: hidden;
   background: var(--wine-900);
-  border-radius: 20px;
+  border: 1px solid rgba(72, 38, 43, 0.1);
+  border-radius: 34px;
+  box-shadow: 0 32px 80px rgba(47, 23, 27, 0.17);
 }
 
-.storyQuote svg {
-  margin-bottom: 18px;
+.mapNarrative {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: clamp(46px, 5vw, 68px);
+  color: var(--cream-50);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(201, 99, 75, 0.28), transparent 34%),
+    radial-gradient(circle at 94% 90%, rgba(124, 132, 96, 0.2), transparent 32%),
+    var(--wine-900);
+}
+
+.mapNarrative::after {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 1px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  content: "";
+}
+
+.mapEyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  color: #f2b7a5;
+  font-size: 0.69rem;
+  font-weight: 820;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mapNarrative h2 {
+  max-width: 410px;
+  margin-top: 22px;
+  font-family: var(--font-display), serif;
+  font-size: clamp(3.05rem, 4.3vw, 4.25rem);
+  font-weight: 540;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.mapNarrative h2 em {
+  display: block;
+  margin-top: 8px;
+  color: #f4c8ba;
+  font-weight: inherit;
+}
+
+.mapNarrative > p {
+  max-width: 390px;
+  margin-top: 23px;
+  color: rgba(255, 255, 255, 0.67);
+  font-size: 0.93rem;
+  line-height: 1.72;
+}
+
+.mapBenefits {
+  display: grid;
+  gap: 17px;
+  margin-top: 34px;
+}
+
+.mapBenefits > span {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: start;
+  gap: 10px;
+}
+
+.mapBenefits > span > svg {
+  margin-top: 2px;
   color: var(--terracotta-400);
 }
 
-.storyQuote p {
+.mapBenefits > span > span {
+  display: grid;
+  gap: 4px;
+}
+
+.mapBenefits strong {
+  font-size: 0.76rem;
+}
+
+.mapBenefits small {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.mapGroup {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: auto;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mapGroup .avatarStack > span {
+  border-color: var(--wine-900);
+}
+
+.mapGroup > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.mapGroup small {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.58rem;
+}
+
+.mapGroup strong {
+  font-size: 0.72rem;
+}
+
+.mapGroupCount {
+  margin-left: auto;
+  color: #f2b7a5;
+  font-size: 0.62rem;
+  font-weight: 760;
+}
+
+.mapCanvas {
+  position: relative;
+  min-width: 0;
+  min-height: 610px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 73% 17%, rgba(151, 168, 126, 0.26) 0 11%, transparent 11.5%),
+    radial-gradient(circle at 16% 76%, rgba(151, 168, 126, 0.2) 0 15%, transparent 15.5%),
+    linear-gradient(138deg, transparent 0 22%, rgba(255, 255, 255, 0.92) 22.3% 25.2%, transparent 25.5% 100%),
+    linear-gradient(46deg, transparent 0 49%, rgba(255, 255, 255, 0.86) 49.3% 52.3%, transparent 52.6% 100%),
+    linear-gradient(101deg, transparent 0 64%, rgba(255, 255, 255, 0.72) 64.3% 66.5%, transparent 66.8% 100%),
+    #e9dfcd;
+  isolation: isolate;
+}
+
+.mapRoads {
+  position: absolute;
+  z-index: -1;
+  inset: -22%;
+  opacity: 0.64;
+  background:
+    repeating-linear-gradient(18deg, transparent 0 48px, rgba(255, 255, 255, 0.66) 49px 52px, transparent 53px 92px),
+    repeating-linear-gradient(112deg, transparent 0 74px, rgba(255, 255, 255, 0.48) 75px 78px, transparent 79px 132px);
+  transform: rotate(-6deg);
+}
+
+.mapCanvas::before {
+  position: absolute;
+  z-index: -1;
+  top: -18%;
+  right: 13%;
+  width: 124px;
+  height: 138%;
+  background: rgba(137, 184, 195, 0.32);
+  border: 9px solid rgba(255, 255, 255, 0.34);
+  border-top: 0;
+  border-bottom: 0;
+  border-radius: 46% 54% 45% 55%;
+  content: "";
+  transform: rotate(8deg);
+}
+
+.mapToolbar {
+  position: absolute;
+  z-index: 8;
+  top: 24px;
+  right: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mapSearch {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 15px;
+  color: var(--wine-900);
+  background: rgba(255, 253, 248, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  box-shadow: 0 12px 34px rgba(47, 23, 27, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.mapSearch > span {
+  display: grid;
+  gap: 2px;
+}
+
+.mapSearch small {
+  color: var(--muted);
+  font-size: 0.55rem;
+}
+
+.mapSearch strong {
+  font-size: 0.72rem;
+}
+
+.mapNearChip {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  color: var(--wine-900);
+  background: rgba(255, 253, 248, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  box-shadow: 0 12px 34px rgba(47, 23, 27, 0.1);
+  backdrop-filter: blur(12px);
+  font-size: 0.64rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.mapAreaLabel {
+  position: absolute;
+  z-index: 1;
+  color: rgba(72, 38, 43, 0.37);
+  font-size: 0.58rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: rotate(-7deg);
+}
+
+.mapAreaOldTown {
+  top: 26%;
+  left: 18%;
+}
+
+.mapAreaRiver {
+  top: 43%;
+  right: 21%;
+  color: rgba(49, 111, 126, 0.46);
+  transform: rotate(81deg);
+}
+
+.currentLocation {
+  position: absolute;
+  z-index: 2;
+  top: 48%;
+  left: 52%;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  background: rgba(201, 99, 75, 0.22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 10px rgba(201, 99, 75, 0.09);
+}
+
+.currentLocation i {
+  width: 9px;
+  height: 9px;
+  background: var(--terracotta-600);
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(72, 38, 43, 0.22);
+}
+
+.mapRestaurantPin {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  min-height: 39px;
+  align-items: center;
+  gap: 0;
+  padding: 8px 9px;
+  color: var(--wine-900);
+  background: var(--cream-50);
+  border: 2px solid var(--white);
+  border-radius: 999px;
+  box-shadow: 0 10px 25px rgba(47, 23, 27, 0.18);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    gap 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.mapRestaurantPin span {
+  max-width: 0;
+  overflow: hidden;
+  font-size: 0.61rem;
+  font-weight: 800;
+  opacity: 0;
+  white-space: nowrap;
+  transition:
+    max-width 240ms ease,
+    opacity 160ms ease;
+}
+
+.mapRestaurantPin:hover,
+.mapRestaurantPinActive {
+  gap: 6px;
+  color: var(--white);
+  background: var(--terracotta-600);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.mapRestaurantPin:hover span,
+.mapRestaurantPinActive span {
+  max-width: 110px;
+  opacity: 1;
+}
+
+.mapPinCasa {
+  top: 30%;
+  left: 67%;
+}
+
+.mapPinKoyo {
+  top: 47%;
+  left: 31%;
+}
+
+.mapPinVolta {
+  top: 62%;
+  left: 77%;
+}
+
+.mapRestaurantCard {
+  position: absolute;
+  z-index: 7;
+  right: 24px;
+  bottom: 42px;
+  display: grid;
+  width: min(430px, calc(100% - 48px));
+  min-height: 168px;
+  grid-template-columns: 152px minmax(0, 1fr);
+  overflow: hidden;
+  color: var(--wine-900);
+  background: rgba(255, 253, 248, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 20px;
+  box-shadow: 0 22px 52px rgba(47, 23, 27, 0.2);
+  backdrop-filter: blur(14px);
+}
+
+.mapRestaurantImage {
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.mapRestaurantImage img {
+  object-fit: cover;
+}
+
+.mapRestaurantInfo {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 17px 17px 15px;
+}
+
+.mapRestaurantMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.57rem;
+}
+
+.mapRestaurantMeta strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--terracotta-600);
+}
+
+.mapRestaurantInfo h3 {
+  margin-top: 8px;
   font-family: var(--font-display), serif;
-  font-size: 1.18rem;
-  font-style: italic;
-  line-height: 1.48;
+  font-size: 1.55rem;
+  font-weight: 620;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.mapRestaurantInfo p {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.mapSaveButton {
+  display: inline-flex;
+  min-height: 35px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: auto;
+  padding: 0 11px;
+  color: var(--white);
+  background: var(--wine-900);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.59rem;
+  font-weight: 760;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.mapSaveButton:hover {
+  background: var(--terracotta-600);
+  transform: translateY(-1px);
+}
+
+.mapSaveButtonSaved,
+.mapSaveButtonSaved:hover {
+  color: var(--olive-700);
+  background: rgba(124, 132, 96, 0.14);
+}
+
+.mapHint {
+  position: absolute;
+  z-index: 3;
+  bottom: 17px;
+  left: 24px;
+  color: rgba(72, 38, 43, 0.5);
+  font-size: 0.56rem;
+  font-weight: 720;
 }
 
 .waitlistSection {
@@ -1949,20 +2315,16 @@
     grid-template-columns: minmax(235px, 0.58fr) minmax(0, 1.42fr);
   }
 
-  .storyCard {
-    grid-template-columns: 130px 1fr;
+  .mapShowcase {
+    grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1.28fr);
   }
 
-  .storyQuote {
-    grid-column: 1 / 3;
-    display: flex;
-    align-items: center;
-    gap: 18px;
+  .mapNarrative {
+    padding: 44px 36px;
   }
 
-  .storyQuote svg {
-    flex: 0 0 auto;
-    margin: 0;
+  .mapNarrative h2 {
+    font-size: clamp(2.7rem, 4.7vw, 3.45rem);
   }
 }
 
@@ -2088,6 +2450,32 @@
     bottom: 30px;
     left: 30px;
   }
+
+  .mapShowcase {
+    grid-template-columns: 1fr;
+  }
+
+  .mapNarrative {
+    min-height: 480px;
+    padding: 48px;
+  }
+
+  .mapNarrative h2 {
+    max-width: 620px;
+  }
+
+  .mapNarrative > p {
+    max-width: 580px;
+  }
+
+  .mapBenefits {
+    max-width: 520px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mapCanvas {
+    min-height: 620px;
+  }
 }
 
 @media (max-width: 620px) {
@@ -2168,7 +2556,6 @@
 
   .problemCopy h2,
   .narrowHeading h2,
-  .storyCopy h2,
   .faqHeading h2 {
     font-size: clamp(2.2rem, 11vw, 3rem);
   }
@@ -2360,20 +2747,115 @@
     font-size: 1.5rem;
   }
 
-  .storyCard {
+  .mapShowcase {
+    border-radius: 24px;
+  }
+
+  .mapNarrative {
+    min-height: 520px;
+    padding: 36px 25px 30px;
+  }
+
+  .mapNarrative h2 {
+    margin-top: 18px;
+    font-size: clamp(2.65rem, 13vw, 3.55rem);
+  }
+
+  .mapNarrative > p {
+    margin-top: 19px;
+    font-size: 0.82rem;
+  }
+
+  .mapBenefits {
     grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 30px 24px;
-    text-align: center;
+    gap: 14px;
+    margin-top: 27px;
   }
 
-  .mapWrap {
-    margin: 0 auto;
+  .mapGroup {
+    padding-top: 22px;
   }
 
-  .storyQuote {
-    grid-column: auto;
-    text-align: left;
+  .mapGroupCount {
+    display: none;
+  }
+
+  .mapCanvas {
+    min-height: 560px;
+  }
+
+  .mapToolbar {
+    top: 14px;
+    right: 14px;
+    left: 14px;
+  }
+
+  .mapSearch {
+    padding: 10px 12px;
+  }
+
+  .mapNearChip {
+    width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .mapNearChip svg {
+    color: var(--wine-900);
+  }
+
+  .mapPinCasa {
+    top: 27%;
+    left: 70%;
+  }
+
+  .mapPinKoyo {
+    top: 43%;
+    left: 29%;
+  }
+
+  .mapPinVolta {
+    top: 55%;
+    left: 76%;
+  }
+
+  .mapRestaurantCard {
+    right: 14px;
+    bottom: 38px;
+    left: 14px;
+    width: auto;
+    min-height: 210px;
+    grid-template-columns: 116px minmax(0, 1fr);
+    border-radius: 17px;
+  }
+
+  .mapRestaurantInfo {
+    padding: 15px 13px 13px;
+  }
+
+  .mapRestaurantMeta > span {
+    max-width: 92px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mapRestaurantInfo h3 {
+    font-size: 1.42rem;
+  }
+
+  .mapSaveButton {
+    padding: 0 8px;
+    font-size: 0.55rem;
+  }
+
+  .mapHint {
+    bottom: 15px;
+    left: 16px;
   }
 
   .waitlistSection {
