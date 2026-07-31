@@ -697,7 +697,7 @@ const mapRestaurants = [
   {
     name: "Casa Nómada",
     category: "Mediterránea · €€",
-    distance: "A 1,2 km",
+    location: "Eixample · Barcelona",
     rating: "4,7",
     image: "/images/mesa-mediterranean-table.webp",
     pinClass: styles.mapPinCasa,
@@ -705,7 +705,7 @@ const mapRestaurants = [
   {
     name: "Koyo",
     category: "Japonesa · €€",
-    distance: "A 850 m",
+    location: "Gràcia · Barcelona",
     rating: "4,8",
     image: "/images/mesa-japanese-table.webp",
     pinClass: styles.mapPinKoyo,
@@ -713,7 +713,7 @@ const mapRestaurants = [
   {
     name: "La Volta",
     category: "Cocina local · €€",
-    distance: "A 1,6 km",
+    location: "El Born · Barcelona",
     rating: "4,6",
     image: "/images/mesa-mediterranean-table.webp",
     pinClass: styles.mapPinVolta,
@@ -733,70 +733,42 @@ function MapShowcase() {
 
   return (
     <Reveal className={styles.mapShowcase}>
-      <div className={styles.mapNarrative}>
+      <div className={styles.mapHeading}>
         <span className={styles.mapEyebrow}>
-          <Compass size={15} /> Explorar con MESA
+          <Compass size={15} /> El mapa de MESA
         </span>
         <h2>
-          Vuestro próximo sitio <em>empieza en el mapa.</em>
+          Una ciudad entera. <em>Vuestra próxima mesa.</em>
         </h2>
         <p>
-          Buscad cerca, explorad cualquier zona y guardad el restaurante en el
-          grupo sin perderlo entre enlaces y capturas.
+          Explorad restaurantes en Barcelona —o en cualquier zona— y guardad
+          los que os gusten directamente en el grupo.
         </p>
-
-        <div className={styles.mapBenefits}>
-          <span>
-            <MapPin size={17} />
-            <span>
-              <strong>Cualquier zona</strong>
-              <small>Cerca de ti o donde vaya a ser el plan.</small>
-            </span>
-          </span>
-          <span>
-            <Heart size={17} />
-            <span>
-              <strong>Directo al grupo</strong>
-              <small>Un toque y todo el mundo lo tiene a mano.</small>
-            </span>
-          </span>
-        </div>
-
-        <div className={styles.mapGroup}>
-          <AvatarStack small />
-          <span>
-            <small>Explorando para</small>
-            <strong>Plan de viernes</strong>
-          </span>
-          <span className={styles.mapGroupCount}>8 guardados</span>
-        </div>
       </div>
 
-      <div className={styles.mapCanvas} aria-label="Demostración del mapa de MESA">
-        <div className={styles.mapRoads} aria-hidden="true" />
+      <div className={styles.mapCanvas}>
+        <iframe
+          className={styles.googleMap}
+          title="Mapa de Barcelona"
+          src="https://www.google.com/maps?ll=41.3874%2C2.1686&z=14&output=embed"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          tabIndex={-1}
+        />
+        <div className={styles.mapWash} aria-hidden="true" />
+
         <div className={styles.mapToolbar}>
           <span className={styles.mapSearch}>
             <Search size={16} />
             <span>
-              <small>Explorando</small>
-              <strong>Girona · centro</strong>
+              <small>Explorando restaurantes en</small>
+              <strong>Barcelona</strong>
             </span>
           </span>
-          <span className={styles.mapNearChip}>
-            <MapPin size={14} /> Cerca de mí
+          <span className={styles.mapResultCount}>
+            <span /> 32 sitios cerca
           </span>
         </div>
-
-        <span className={`${styles.mapAreaLabel} ${styles.mapAreaOldTown}`}>
-          Centro histórico
-        </span>
-        <span className={`${styles.mapAreaLabel} ${styles.mapAreaRiver}`}>
-          Río
-        </span>
-
-        <span className={styles.currentLocation} aria-label="Tu ubicación">
-          <i />
-        </span>
 
         {mapRestaurants.map((restaurant, index) => {
           const selected = index === activeRestaurant;
@@ -812,7 +784,7 @@ function MapShowcase() {
               onClick={() => selectRestaurant(index)}
               key={restaurant.name}
             >
-              <MapPin size={20} fill="currentColor" />
+              <MapPin size={18} fill="currentColor" />
               <span>{restaurant.name}</span>
             </button>
           );
@@ -844,7 +816,7 @@ function MapShowcase() {
               </span>
               <h3>{active.name}</h3>
               <p>
-                <MapPin size={12} /> {active.distance}
+                <MapPin size={12} /> {active.location}
               </p>
               <button
                 className={`${styles.mapSaveButton} ${saved ? styles.mapSaveButtonSaved : ""}`}
@@ -858,7 +830,14 @@ function MapShowcase() {
           </motion.article>
         </AnimatePresence>
 
-        <span className={styles.mapHint}>Pulsa un marcador para explorar</span>
+        <div className={styles.mapGroup}>
+          <AvatarStack small />
+          <span>
+            <small>Guardando para</small>
+            <strong>Plan de viernes</strong>
+          </span>
+          <span className={styles.mapGroupCount}>8 sitios</span>
+        </div>
       </div>
     </Reveal>
   );
