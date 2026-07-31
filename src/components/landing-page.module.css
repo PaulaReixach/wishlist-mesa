@@ -1046,129 +1046,160 @@
   margin-left: 36px;
   overflow: hidden;
   background: var(--white);
-  border: 1px solid rgba(72, 38, 43, 0.09);
-  border-radius: 17px;
-  box-shadow: 0 9px 24px rgba(72, 38, 43, 0.08);
+  border: 1px solid rgba(72, 38, 43, 0.1);
+  border-radius: 19px;
+  box-shadow:
+    0 14px 30px rgba(72, 38, 43, 0.1),
+    0 2px 7px rgba(72, 38, 43, 0.05);
 }
 
-.recommendationTop {
+.recommendationVisual {
+  position: relative;
+  height: 168px;
+  overflow: hidden;
+  background: var(--wine-900);
+}
+
+.recommendationVisual::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(27, 14, 16, 0.12) 22%,
+    rgba(27, 14, 16, 0.08) 46%,
+    rgba(27, 14, 16, 0.8) 100%
+  );
+  content: "";
+}
+
+.recommendationVisual > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recommendationSource,
+.recommendationRating {
+  position: absolute;
+  z-index: 2;
+  top: 11px;
+  display: inline-flex;
+  height: 28px;
+  align-items: center;
+  color: var(--white);
+  background: rgba(35, 18, 21, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(29, 13, 16, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.recommendationSource {
+  left: 11px;
+  gap: 6px;
+  padding: 0 9px 0 5px;
+  font-size: 0.49rem;
+  font-weight: 750;
+  letter-spacing: 0.015em;
+}
+
+.recommendationMark {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: #f4c3b5;
+}
+
+.recommendationRating {
+  right: 11px;
+  gap: 4px;
+  padding: 0 9px;
+  color: #fff1bd;
+  font-size: 0.52rem;
+  font-weight: 800;
+}
+
+.recommendationIdentity {
+  position: absolute;
+  z-index: 2;
+  right: 14px;
+  bottom: 13px;
+  left: 14px;
+  color: var(--white);
+}
+
+.recommendationIdentity small,
+.recommendationIdentity strong,
+.recommendationPeople strong,
+.recommendationPeople small {
+  display: block;
+}
+
+.recommendationIdentity small {
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.51rem;
+  font-weight: 650;
+}
+
+.recommendationIdentity strong {
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  font-weight: 620;
+  letter-spacing: -0.025em;
+}
+
+.recommendationFooter {
   display: flex;
+  min-height: 62px;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   padding: 10px 11px;
-  background: #f4ede5;
-  border-bottom: 1px solid rgba(72, 38, 43, 0.06);
 }
 
-.recommendationTop > span:first-child {
+.recommendationGroup {
   display: flex;
   min-width: 0;
   align-items: center;
   gap: 8px;
 }
 
-.recommendationTop strong,
-.recommendationTop small {
-  display: block;
-}
-
-.recommendationTop strong {
-  margin-bottom: 1px;
-  color: var(--wine-900);
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
-}
-
-.recommendationTop small {
-  color: var(--muted);
-  font-size: 0.49rem;
-}
-
-.recommendationMark {
-  width: 27px;
-  height: 27px;
-  flex: 0 0 27px;
-  color: var(--terracotta-500);
-}
-
-.recommendationMatch {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 7px;
-  color: var(--olive-700);
-  background: rgba(124, 132, 96, 0.12);
-  border-radius: 999px;
-  font-size: 0.5rem;
-  font-weight: 800;
-}
-
-.recommendationRestaurant {
-  display: grid;
-  grid-template-columns: 68px minmax(0, 1fr) 28px;
-  align-items: center;
-  gap: 11px;
-  padding: 10px;
-}
-
-.recommendationImage {
-  display: block;
-  width: 68px;
-  height: 62px;
-  overflow: hidden;
-  border-radius: 11px;
-}
-
-.recommendationImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.recommendationCopy {
+.recommendationPeople {
   min-width: 0;
 }
 
-.recommendationCopy > strong,
-.recommendationCopy > span,
-.recommendationCopy > small {
-  display: block;
-}
-
-.recommendationCopy > strong {
-  margin-bottom: 4px;
+.recommendationPeople strong {
+  margin-bottom: 2px;
   color: var(--wine-900);
-  font-size: 0.72rem;
+  font-size: 0.56rem;
 }
 
-.recommendationCopy > span {
-  overflow: hidden;
+.recommendationPeople small {
   color: var(--muted);
-  font-size: 0.52rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.48rem;
 }
 
-.recommendationCopy > small {
-  display: flex;
+.recommendationAction {
+  display: inline-flex;
+  height: 32px;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  color: var(--terracotta-600);
-  font-size: 0.53rem;
-  font-weight: 800;
-}
-
-.recommendationArrow {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
+  gap: 5px;
+  padding: 0 10px;
   color: var(--white);
   background: var(--wine-900);
-  border-radius: 9px;
+  border-radius: 10px;
+  font-size: 0.51rem;
+  font-weight: 800;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.chatRecommendation:hover .recommendationAction {
+  background: var(--terracotta-600);
+  transform: translateX(1px);
 }
 
 .chatComposer {
@@ -2372,14 +2403,30 @@
     margin-left: 34px;
   }
 
-  .recommendationRestaurant {
-    grid-template-columns: 60px minmax(0, 1fr) 28px;
-    gap: 9px;
+  .recommendationVisual {
+    height: 148px;
   }
 
-  .recommendationImage {
-    width: 60px;
-    height: 58px;
+  .recommendationFooter {
+    min-height: 58px;
+    padding: 9px;
+  }
+
+  .recommendationPeople small {
+    display: none;
+  }
+
+  .recommendationAction {
+    width: 32px;
+    padding: 0;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .recommendationAction svg {
+    color: var(--white);
   }
 
   .chatComposer {

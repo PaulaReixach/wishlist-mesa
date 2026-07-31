@@ -543,36 +543,35 @@ function ChatCard() {
               layout
               {...messageMotion}
             >
-              <div className={styles.recommendationTop}>
-                <span>
+              <div className={styles.recommendationVisual}>
+                <Image
+                  src="/images/mesa-mediterranean-table.webp"
+                  alt="Mesa de Casa Nómada"
+                  width={720}
+                  height={420}
+                />
+                <span className={styles.recommendationSource}>
                   <MesaMark className={styles.recommendationMark} />
-                  <span>
-                    <strong>MESA</strong>
-                    <small>Opción favorita del grupo</small>
-                  </span>
+                  Compartido desde MESA
                 </span>
-                <span className={styles.recommendationMatch}>
-                  <Check size={12} /> 4 de 5
+                <span className={styles.recommendationRating}>
+                  <Star size={11} fill="currentColor" /> 4,7
+                </span>
+                <span className={styles.recommendationIdentity}>
+                  <small>Mediterránea · €€ · 1,2 km</small>
+                  <strong>Casa Nómada</strong>
                 </span>
               </div>
-              <div className={styles.recommendationRestaurant}>
-                <span className={styles.recommendationImage}>
-                  <Image
-                    src="/images/mesa-mediterranean-table.webp"
-                    alt="Mesa de Casa Nómada"
-                    width={92}
-                    height={92}
-                  />
+              <div className={styles.recommendationFooter}>
+                <span className={styles.recommendationGroup}>
+                  <AvatarStack small />
+                  <span className={styles.recommendationPeople}>
+                    <strong>4 de 5 coinciden</strong>
+                    <small>Favorito del grupo</small>
+                  </span>
                 </span>
-                <span className={styles.recommendationCopy}>
-                  <strong>Casa Nómada</strong>
-                  <span>Mediterránea · €€ · 1,2 km</span>
-                  <small>
-                    <Star size={11} fill="currentColor" /> 4,7
-                  </small>
-                </span>
-                <span className={styles.recommendationArrow}>
-                  <ArrowRight size={16} />
+                <span className={styles.recommendationAction}>
+                  Ver en MESA <ArrowRight size={14} />
                 </span>
               </div>
             </motion.div>
