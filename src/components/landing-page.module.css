@@ -1812,49 +1812,45 @@
 .mapRestaurantPin {
   position: absolute;
   z-index: 4;
-  display: flex;
-  min-height: 36px;
-  align-items: center;
-  gap: 0;
-  padding: 7px;
-  color: var(--wine-900);
-  background: var(--cream-50);
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  color: var(--terracotta-600);
+  background: rgba(255, 253, 248, 0.97);
   border: 2px solid var(--white);
-  border-radius: 999px;
-  box-shadow: 0 10px 25px rgba(47, 23, 27, 0.18);
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(47, 23, 27, 0.17);
   cursor: pointer;
   transform: translate(-50%, -50%);
   transition:
-    gap 180ms ease,
     color 180ms ease,
     background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
     transform 180ms ease;
 }
 
-.mapRestaurantPin span {
-  max-width: 0;
-  overflow: hidden;
-  font-size: 0.61rem;
-  font-weight: 800;
-  opacity: 0;
-  white-space: nowrap;
-  transition:
-    max-width 240ms ease,
-    opacity 160ms ease;
-}
-
-.mapRestaurantPin:hover,
-.mapRestaurantPinActive {
-  gap: 6px;
+.mapRestaurantPin:hover {
   color: var(--white);
   background: var(--terracotta-600);
-  transform: translate(-50%, -50%) scale(1.05);
+  transform: translate(-50%, -50%) scale(1.08);
 }
 
-.mapRestaurantPin:hover span,
-.mapRestaurantPinActive span {
-  max-width: 110px;
-  opacity: 1;
+.mapRestaurantPinActive {
+  color: var(--white);
+  background: var(--wine-900);
+  border-color: var(--cream-50);
+  box-shadow:
+    0 0 0 5px rgba(201, 99, 75, 0.22),
+    0 12px 26px rgba(47, 23, 27, 0.26);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.mapRestaurantPin:focus-visible {
+  outline: 3px solid rgba(201, 99, 75, 0.55);
+  outline-offset: 3px;
 }
 
 .mapPinCasa {
