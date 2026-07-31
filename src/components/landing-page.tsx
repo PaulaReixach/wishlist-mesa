@@ -1,12 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import {
   ArrowDown,
   ArrowRight,
   Bell,
   Check,
+  CheckCheck,
   ChevronRight,
   Compass,
   Heart,
@@ -16,6 +23,7 @@ import {
   MoreHorizontal,
   Plus,
   Search,
+  SendHorizontal,
   Sparkles,
   Star,
   UserRound,
@@ -115,8 +123,8 @@ function PhonePreview() {
 
       <motion.div
         className={styles.phone}
-        initial={reduceMotion ? false : { opacity: 0, y: 28, rotate: 2 }}
-        animate={reduceMotion ? undefined : { opacity: 1, y: 0, rotate: -2 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 28, rotate: -2 }}
+        animate={reduceMotion ? undefined : { opacity: 1, y: 0, rotate: 3.2 }}
         transition={{ duration: 0.9, delay: 0.35, ease }}
       >
         <div className={styles.phoneTop}>
@@ -345,46 +353,294 @@ function StepsExperience() {
 }
 
 function ChatCard() {
+  const reduceMotion = useReducedMotion();
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const [started, setStarted] = useState(false);
+  const [chatStep, setChatStep] = useState(0);
+  const [draft, setDraft] = useState("");
+  const [demoMessages, setDemoMessages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!started) {
+      return;
+    }
+
+    if (reduceMotion) {
+      return;
+    }
+
+    const timings = [220, 920, 1700, 2450, 3200, 4100];
+    const timers = timings.map((delay, index) =>
+      window.setTimeout(
+        () => setChatStep((current) => Math.max(current, index + 1)),
+        delay,
+      ),
+    );
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [reduceMotion, started]);
+
+  useEffect(() => {
+    const viewport = messagesRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      viewport.scrollTo({
+        top: viewport.scrollHeight,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [chatStep, demoMessages, reduceMotion]);
+
+  function sendDemoMessage(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const message = draft.trim();
+
+    if (!message) {
+      return;
+    }
+
+    setDemoMessages((current) => [...current, message]);
+    setChatStep((current) => Math.max(current, 6));
+    setDraft("");
+  }
+
+  const messageMotion = {
+    initial: reduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: { duration: 0.38, ease },
+  } as const;
+
   return (
-    <div className={styles.chatCard}>
+    <motion.div
+      className={styles.chatCard}
+      onViewportEnter={() => {
+        setStarted(true);
+        if (reduceMotion) {
+          setChatStep(6);
+        }
+      }}
+      viewport={{ once: true, amount: 0.45 }}
+    >
       <div className={styles.chatHeader}>
-        <AvatarStack small />
+        <span className={styles.chatGroupAvatar}>
+          {avatars.slice(0, 3).map((avatar) => (
+            <span key={avatar.src}>
+              <Image src={avatar.src} alt="" width={34} height={34} />
+            </span>
+          ))}
+        </span>
         <div>
           <strong>Plan de viernes</strong>
-          <span>5 participantes</span>
+          <span className={styles.chatStatus}>
+            <i /> 5 participantes
+          </span>
         </div>
-        <span className={styles.chatDots} aria-label="Más opciones">
+        <button className={styles.chatDots} type="button" aria-label="Más opciones">
           <MoreHorizontal size={19} />
-        </span>
+        </button>
       </div>
-      <div className={styles.messages}>
-        <div className={`${styles.message} ${styles.messageOther}`}>
-          ¿Dónde cenamos mañana?
-          <small>19:42</small>
-        </div>
-        <div className={`${styles.message} ${styles.messageMe}`}>
-          A mí me da igual
-          <small>19:43</small>
-        </div>
-        <div className={`${styles.message} ${styles.messageOther}`}>
-          ¿El italiano que mandasteis?
-          <small>19:44</small>
-        </div>
-        <div className={`${styles.message} ${styles.messageMe}`}>
-          ¿Cuál era? No lo encuentro
-          <small>19:45</small>
-        </div>
+      <div className={styles.messages} ref={messagesRef} aria-live="polite">
+        <span className={styles.chatDate}>Hoy</span>
+        <AnimatePresence initial={false}>
+          {chatStep >= 1 && (
+            <motion.div
+              className={styles.messageRow}
+              key="lucas-question"
+              layout
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-lucas.webp"
+                  alt="Lucas"
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <div className={styles.messageCluster}>
+                <span className={styles.messageAuthor}>Lucas</span>
+                <div className={`${styles.message} ${styles.messageOther}`}>
+                  <span>¿Dónde cenamos mañana? Llevo media hora buscando.</span>
+                  <small>19:42</small>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep >= 2 && (
+            <motion.div
+              className={`${styles.messageRow} ${styles.messageRowMine}`}
+              key="paula-link"
+              layout
+              {...messageMotion}
+            >
+              <div className={`${styles.message} ${styles.messageMe}`}>
+                <span>Yo tenía guardado un sitio, pero no encuentro el enlace.</span>
+                <small>
+                  19:43 <CheckCheck size={12} />
+                </small>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep >= 3 && (
+            <motion.div
+              className={styles.messageRow}
+              key="ana-mesa"
+              layout
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-ana.webp"
+                  alt="Ana"
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <div className={styles.messageCluster}>
+                <span className={styles.messageAuthor}>Ana</span>
+                <div className={`${styles.message} ${styles.messageOther}`}>
+                  <span>Lo guardé en nuestro grupo de MESA. Mirad:</span>
+                  <small>19:44</small>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep === 4 && (
+            <motion.div
+              className={styles.typingRow}
+              key="typing"
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-ana.webp"
+                  alt=""
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <span className={styles.typingBubble} aria-label="Ana está escribiendo">
+                <i />
+                <i />
+                <i />
+              </span>
+            </motion.div>
+          )}
+
+          {chatStep >= 5 && (
+            <motion.div
+              className={styles.chatRecommendation}
+              key="mesa-recommendation"
+              layout
+              {...messageMotion}
+            >
+              <div className={styles.recommendationTop}>
+                <span>
+                  <MesaMark className={styles.recommendationMark} />
+                  <span>
+                    <strong>MESA</strong>
+                    <small>Opción favorita del grupo</small>
+                  </span>
+                </span>
+                <span className={styles.recommendationMatch}>
+                  <Check size={12} /> 4 de 5
+                </span>
+              </div>
+              <div className={styles.recommendationRestaurant}>
+                <span className={styles.recommendationImage}>
+                  <Image
+                    src="/images/mesa-mediterranean-table.webp"
+                    alt="Mesa de Casa Nómada"
+                    width={92}
+                    height={92}
+                  />
+                </span>
+                <span className={styles.recommendationCopy}>
+                  <strong>Casa Nómada</strong>
+                  <span>Mediterránea · €€ · 1,2 km</span>
+                  <small>
+                    <Star size={11} fill="currentColor" /> 4,7
+                  </small>
+                </span>
+                <span className={styles.recommendationArrow}>
+                  <ArrowRight size={16} />
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep >= 6 && (
+            <motion.div
+              className={styles.messageRow}
+              key="lucas-final"
+              layout
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-lucas.webp"
+                  alt="Lucas"
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <div className={styles.messageCluster}>
+                <span className={styles.messageAuthor}>Lucas</span>
+                <div className={`${styles.message} ${styles.messageOther}`}>
+                  <span>Casa Nómada entonces. Reservo a las 21:30.</span>
+                  <small>19:45</small>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {demoMessages.map((message, index) => (
+            <motion.div
+              className={`${styles.messageRow} ${styles.messageRowMine}`}
+              key={`demo-${index}-${message}`}
+              layout
+              {...messageMotion}
+            >
+              <div className={`${styles.message} ${styles.messageMe}`}>
+                <span>{message}</span>
+                <small>
+                  Ahora <CheckCheck size={12} />
+                </small>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
-      <div className={styles.mesaAnswer}>
-        <MesaMark className={styles.answerMark} />
-        <div>
-          <span>MESA</span>
-          <strong>Tenéis 6 opciones guardadas</strong>
-          <small>Todo el grupo, en un solo sitio.</small>
-        </div>
-        <ArrowRight size={18} />
-      </div>
-    </div>
+      <form className={styles.chatComposer} onSubmit={sendDemoMessage}>
+        <button className={styles.composerAdd} type="button" aria-label="Adjuntar">
+          <Plus size={17} />
+        </button>
+        <input
+          aria-label="Escribe un mensaje de prueba"
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          placeholder="Escribe un mensaje…"
+          maxLength={120}
+        />
+        <button
+          className={styles.composerSend}
+          type="submit"
+          aria-label="Enviar mensaje"
+          disabled={!draft.trim()}
+        >
+          <SendHorizontal size={16} />
+        </button>
+      </form>
+    </motion.div>
   );
 }
 
