@@ -215,6 +215,7 @@
   width: 31px;
   height: 31px;
   place-items: center;
+  overflow: hidden;
   margin-left: -8px;
   color: var(--white);
   border: 2.5px solid var(--cream-50);
@@ -227,16 +228,10 @@
   margin-left: 0;
 }
 
-.avatarOne {
-  background: #b8614e;
-}
-
-.avatarTwo {
-  background: #596444;
-}
-
-.avatarThree {
-  background: #77515c;
+.avatarFace img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .avatarMore {
@@ -366,16 +361,17 @@
 }
 
 .appAvatar {
-  display: grid;
   width: 32px;
   height: 32px;
-  place-items: center;
-  color: var(--white);
-  background: var(--terracotta-500);
+  overflow: hidden;
   border: 3px solid #f2dfd7;
   border-radius: 50%;
-  font-size: 0.66rem;
-  font-weight: 800;
+}
+
+.appAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .appSearch {
@@ -444,17 +440,16 @@
 }
 
 .groupThumb {
-  display: grid;
   width: 40px;
   height: 40px;
-  place-items: center;
-  color: var(--white);
-  background: var(--terracotta-500);
+  overflow: hidden;
   border-radius: 10px;
 }
 
-.groupThumbOlive {
-  background: var(--olive-700);
+.groupThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .appGroup strong,
@@ -477,12 +472,6 @@
   display: none;
 }
 
-.miniCouple {
-  color: var(--olive-700);
-  font-size: 0.54rem;
-  font-weight: 800;
-}
-
 .restaurantCard {
   overflow: hidden;
   background: var(--white);
@@ -497,7 +486,7 @@
   overflow: hidden;
 }
 
-.restaurantImage svg {
+.restaurantImage > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -811,9 +800,13 @@
 }
 
 .chatHeader .chatDots {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
   color: #9d928b;
-  font-size: 0.9rem;
-  letter-spacing: 2px;
+  background: #f5f0e9;
+  border-radius: 9px;
 }
 
 .messages {
@@ -1066,119 +1059,15 @@
   left: 0;
   height: 310px;
   overflow: hidden;
-  background:
-    linear-gradient(40deg, transparent 48%, #eee5d9 49%, #eee5d9 52%, transparent 53%),
-    linear-gradient(130deg, transparent 46%, #e9dfd1 47%, #e9dfd1 50%, transparent 51%),
-    #f7f2e9;
+  background: #e7e3dc;
   border-top: 1px solid #eee3d6;
 }
 
-.mapCanvas::before,
-.mapCanvas::after {
-  position: absolute;
-  background: rgba(141, 153, 101, 0.17);
-  border-radius: 50%;
-  content: "";
-}
-
-.mapCanvas::before {
-  top: 18px;
-  left: 24px;
-  width: 120px;
-  height: 80px;
-}
-
-.mapCanvas::after {
-  right: 36px;
-  bottom: 24px;
-  width: 140px;
-  height: 90px;
-}
-
-.road {
-  position: absolute;
-  z-index: 1;
-  display: block;
-  height: 5px;
-  background: #fff;
-  border: 1px solid #e7dbcd;
-  border-radius: 999px;
-  box-shadow: 0 0 0 1px rgba(200, 182, 161, 0.1);
-}
-
-.roadOne {
-  top: 100px;
-  left: -50px;
-  width: 640px;
-  transform: rotate(-12deg);
-}
-
-.roadTwo {
-  top: 180px;
-  left: -20px;
-  width: 600px;
-  transform: rotate(18deg);
-}
-
-.roadThree {
-  top: 120px;
-  left: 160px;
-  width: 330px;
-  transform: rotate(76deg);
-}
-
-.mapPin {
-  position: absolute;
-  z-index: 3;
-  display: grid;
-  width: 35px;
-  height: 35px;
-  place-items: center;
-  color: var(--white);
-  background: var(--terracotta-500);
-  border: 3px solid var(--white);
-  border-radius: 50% 50% 50% 10px;
-  box-shadow: 0 8px 18px rgba(84, 43, 45, 0.18);
-  transform: rotate(-45deg);
-}
-
-.mapPin svg {
-  transform: rotate(45deg);
-}
-
-.pinOne {
-  top: 57px;
-  right: 98px;
-}
-
-.pinTwo {
-  top: 128px;
-  left: 104px;
-  background: var(--olive-700);
-}
-
-.pinThree {
-  right: 64px;
-  bottom: 48px;
-  background: var(--wine-800);
-}
-
-.locationPulse {
-  position: absolute;
-  z-index: 3;
-  top: 142px;
-  left: 51%;
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  color: var(--terracotta-600);
-  background: var(--white);
-  border: 1px solid #e5d8ca;
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 9px rgba(201, 99, 75, 0.12),
-    0 8px 18px rgba(84, 43, 45, 0.16);
+.mapCanvas iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: saturate(0.78) contrast(0.95);
 }
 
 .mapResult {
@@ -1207,7 +1096,7 @@
   border-radius: 10px;
 }
 
-.mapResultArt svg {
+.mapResultArt img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1268,19 +1157,17 @@
   border-radius: 15px;
 }
 
-.groupListIcon {
-  display: grid;
+.groupListImage {
   width: 45px;
   height: 45px;
-  place-items: center;
-  background: var(--terracotta-500);
+  overflow: hidden;
   border-radius: 12px;
-  font-size: 1.15rem;
 }
 
-.groupListIcon.oliveIcon {
-  color: var(--white);
-  background: var(--olive-700);
+.groupListImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .groupList strong,
@@ -1300,12 +1187,6 @@
 
 .groupList .avatarStack > span {
   border-color: var(--wine-900);
-}
-
-.twoAvatars {
-  color: var(--terracotta-400);
-  font-size: 0.62rem;
-  font-weight: 800;
 }
 
 .savedFeature {
@@ -1390,7 +1271,7 @@
   border-radius: 12px;
 }
 
-.savedArt svg {
+.savedArt img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1467,6 +1348,9 @@
 }
 
 .match {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   color: var(--terracotta-600);
   font-size: 0.62rem;
   font-weight: 800;
@@ -1642,41 +1526,6 @@
 .ctaForm {
   max-width: 620px;
   margin: 35px auto 0;
-}
-
-.waitlistDecor span {
-  position: absolute;
-  display: grid;
-  width: 70px;
-  height: 70px;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 22px;
-  font-size: 1.7rem;
-  transform: rotate(-8deg);
-}
-
-.waitlistDecor span:nth-child(1) {
-  top: 70px;
-  left: 8%;
-}
-
-.waitlistDecor span:nth-child(2) {
-  right: 9%;
-  bottom: 62px;
-  transform: rotate(10deg);
-}
-
-.waitlistDecor span:nth-child(3) {
-  top: 80px;
-  right: 18%;
-  width: 46px;
-  height: 46px;
-  color: var(--terracotta-400);
-  border-radius: 15px;
-  font-size: 1.15rem;
-  transform: rotate(6deg);
 }
 
 .faqSection {
@@ -2053,10 +1902,6 @@
   .waitlistSection {
     padding-top: 100px;
     padding-bottom: 100px;
-  }
-
-  .waitlistDecor {
-    display: none;
   }
 
   .waitlistContent h2 {

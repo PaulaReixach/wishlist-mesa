@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import type { ReactNode } from "react";
 import {
   ArrowDown,
   ArrowRight,
   Bell,
-  CalendarDays,
   Check,
   ChevronRight,
   Compass,
@@ -13,7 +13,7 @@ import {
   Home,
   Map,
   MapPin,
-  Navigation,
+  MoreHorizontal,
   Plus,
   Search,
   Sparkles,
@@ -28,6 +28,12 @@ import { WaitlistForm } from "@/components/waitlist-form";
 import styles from "./landing-page.module.css";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+const avatars = [
+  { src: "/images/avatar-paula.webp", alt: "Paula" },
+  { src: "/images/avatar-lucas.webp", alt: "Lucas" },
+  { src: "/images/avatar-ana.webp", alt: "Ana" },
+];
 
 function Reveal({
   children,
@@ -53,83 +59,23 @@ function Reveal({
   );
 }
 
-function DishArtwork() {
-  return (
-    <svg
-      viewBox="0 0 360 210"
-      role="img"
-      aria-label="Ilustración de una mesa con varios platos"
-    >
-      <defs>
-        <linearGradient id="mesa-table" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#C8785D" />
-          <stop offset="1" stopColor="#7A3F3A" />
-        </linearGradient>
-        <radialGradient id="mesa-plate" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stopColor="#FFFDF8" />
-          <stop offset="1" stopColor="#E8DECF" />
-        </radialGradient>
-      </defs>
-      <rect width="360" height="210" rx="26" fill="url(#mesa-table)" />
-      <path
-        d="M0 46c74 26 120-16 183 4 70 22 99 5 177-15v175H0V46Z"
-        fill="#542A2E"
-        opacity=".36"
-      />
-      <circle cx="176" cy="108" r="67" fill="#2E171A" opacity=".22" />
-      <circle cx="176" cy="101" r="58" fill="url(#mesa-plate)" />
-      <circle cx="176" cy="101" r="45" fill="#F6F0E4" stroke="#D2C5B2" />
-      <path
-        d="M136 99c15-25 31-31 47-26 18 5 25 19 35 38-18 16-57 22-82-12Z"
-        fill="#D17855"
-      />
-      <path
-        d="M143 96c12-8 24-11 36-9 10 1 22 7 31 18"
-        stroke="#F0C96A"
-        strokeWidth="8"
-        strokeLinecap="round"
-      />
-      <circle cx="161" cy="110" r="6" fill="#738253" />
-      <circle cx="190" cy="91" r="5" fill="#738253" />
-      <circle cx="201" cy="117" r="5" fill="#738253" />
-      <ellipse cx="67" cy="65" rx="37" ry="26" fill="#FFF9EF" />
-      <ellipse cx="67" cy="65" rx="29" ry="18" fill="#8A9A62" />
-      <path
-        d="M48 62c11-11 25-11 38 0M52 70c9-8 20-8 31 0"
-        stroke="#DCE3C4"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <ellipse cx="302" cy="148" rx="35" ry="25" fill="#FFF9EF" />
-      <ellipse cx="302" cy="148" rx="27" ry="17" fill="#D49A50" />
-      <circle cx="292" cy="144" r="4" fill="#F8E3A6" />
-      <circle cx="311" cy="152" r="5" fill="#A9523F" />
-      <circle cx="304" cy="139" r="4" fill="#72815A" />
-      <path
-        d="M252 35v66M243 35v30c0 8 18 8 18 0V35M285 34v68"
-        stroke="#F8EBDD"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <path
-        d="M286 34c12 14 12 28 0 41"
-        stroke="#F8EBDD"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <circle cx="43" cy="159" r="19" fill="#F6E8D5" opacity=".9" />
-      <circle cx="43" cy="159" r="12" fill="#682F35" opacity=".72" />
-    </svg>
-  );
-}
+function AvatarStack({
+  small = false,
+  twoOnly = false,
+}: {
+  small?: boolean;
+  twoOnly?: boolean;
+}) {
+  const visibleAvatars = twoOnly ? avatars.slice(0, 2) : avatars;
 
-function AvatarStack({ small = false }: { small?: boolean }) {
   return (
     <span className={`${styles.avatarStack} ${small ? styles.avatarSmall : ""}`}>
-      <span className={styles.avatarOne}>P</span>
-      <span className={styles.avatarTwo}>L</span>
-      <span className={styles.avatarThree}>A</span>
-      <span className={styles.avatarMore}>+2</span>
+      {visibleAvatars.map((avatar) => (
+        <span className={styles.avatarFace} key={avatar.src}>
+          <Image src={avatar.src} alt={avatar.alt} width={40} height={40} />
+        </span>
+      ))}
+      {!twoOnly && <span className={styles.avatarMore}>+2</span>}
     </span>
   );
 }
@@ -187,7 +133,14 @@ function PhonePreview() {
             <span className={styles.appEyebrow}>Hola, Paula</span>
             <h3>¿Qué te apetece hoy?</h3>
           </div>
-          <span className={styles.appAvatar}>P</span>
+          <span className={styles.appAvatar}>
+            <Image
+              src="/images/avatar-paula.webp"
+              alt="Foto de perfil de Paula"
+              width={36}
+              height={36}
+            />
+          </span>
         </div>
         <div className={styles.appSearch}>
           <Search size={15} />
@@ -205,7 +158,12 @@ function PhonePreview() {
         <div className={styles.appGroups}>
           <div className={styles.appGroup}>
             <div className={styles.groupThumb}>
-              <Utensils size={20} />
+              <Image
+                src="/images/mesa-mediterranean-table.webp"
+                alt="Mesa de cocina mediterránea"
+                width={80}
+                height={80}
+              />
             </div>
             <div>
               <strong>Plan de viernes</strong>
@@ -214,14 +172,19 @@ function PhonePreview() {
             <AvatarStack small />
           </div>
           <div className={styles.appGroup}>
-            <div className={`${styles.groupThumb} ${styles.groupThumbOlive}`}>
-              <CalendarDays size={20} />
+            <div className={styles.groupThumb}>
+              <Image
+                src="/images/mesa-japanese-table.webp"
+                alt="Mesa de cocina japonesa"
+                width={80}
+                height={80}
+              />
             </div>
             <div>
               <strong>Parejita</strong>
               <small>12 restaurantes</small>
             </div>
-            <span className={styles.miniCouple}>P · L</span>
+            <AvatarStack small twoOnly />
           </div>
         </div>
         <div className={styles.appSectionTitle}>
@@ -232,7 +195,12 @@ function PhonePreview() {
         </div>
         <div className={styles.restaurantCard}>
           <div className={styles.restaurantImage}>
-            <DishArtwork />
+            <Image
+              src="/images/mesa-mediterranean-table.webp"
+              alt="Platos de Casa Nómada"
+              fill
+              sizes="280px"
+            />
             <span className={styles.heartButton}>
               <Heart size={15} fill="currentColor" />
             </span>
@@ -303,10 +271,12 @@ function ChatCard() {
       <div className={styles.chatHeader}>
         <AvatarStack small />
         <div>
-          <strong>Viernes 🍷</strong>
+          <strong>Plan de viernes</strong>
           <span>5 participantes</span>
         </div>
-        <span className={styles.chatDots}>•••</span>
+        <span className={styles.chatDots} aria-label="Más opciones">
+          <MoreHorizontal size={19} />
+        </span>
       </div>
       <div className={styles.messages}>
         <div className={`${styles.message} ${styles.messageOther}`}>
@@ -314,7 +284,7 @@ function ChatCard() {
           <small>19:42</small>
         </div>
         <div className={`${styles.message} ${styles.messageMe}`}>
-          A mí me da igual 😅
+          A mí me da igual
           <small>19:43</small>
         </div>
         <div className={`${styles.message} ${styles.messageOther}`}>
@@ -353,25 +323,22 @@ function FeatureGrid() {
             no sabíais que estabais buscando.
           </p>
         </div>
-        <div className={styles.mapCanvas} aria-hidden="true">
-          <span className={`${styles.road} ${styles.roadOne}`} />
-          <span className={`${styles.road} ${styles.roadTwo}`} />
-          <span className={`${styles.road} ${styles.roadThree}`} />
-          <span className={`${styles.mapPin} ${styles.pinOne}`}>
-            <Utensils size={15} />
-          </span>
-          <span className={`${styles.mapPin} ${styles.pinTwo}`}>
-            <Star size={15} />
-          </span>
-          <span className={`${styles.mapPin} ${styles.pinThree}`}>
-            <Heart size={15} />
-          </span>
-          <span className={styles.locationPulse}>
-            <Navigation size={17} fill="currentColor" />
-          </span>
+        <div className={styles.mapCanvas}>
+          <iframe
+            title="Mapa de restaurantes en Girona"
+            src="https://www.google.com/maps?q=restaurantes%20en%20Girona%2C%20Espa%C3%B1a&z=14&output=embed"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            tabIndex={-1}
+          />
           <div className={styles.mapResult}>
             <div className={styles.mapResultArt}>
-              <DishArtwork />
+              <Image
+                src="/images/mesa-mediterranean-table.webp"
+                alt="Platos de La Terrassa"
+                width={100}
+                height={100}
+              />
             </div>
             <span>
               <strong>La Terrassa</strong>
@@ -395,7 +362,14 @@ function FeatureGrid() {
         </p>
         <div className={styles.groupList}>
           <div>
-            <span className={styles.groupListIcon}>🍷</span>
+            <span className={styles.groupListImage}>
+              <Image
+                src="/images/mesa-mediterranean-table.webp"
+                alt="Plan de viernes"
+                width={90}
+                height={90}
+              />
+            </span>
             <span>
               <strong>Plan de viernes</strong>
               <small>8 sitios por probar</small>
@@ -403,12 +377,19 @@ function FeatureGrid() {
             <AvatarStack small />
           </div>
           <div>
-            <span className={`${styles.groupListIcon} ${styles.oliveIcon}`}>♥</span>
+            <span className={styles.groupListImage}>
+              <Image
+                src="/images/mesa-japanese-table.webp"
+                alt="Plan en pareja"
+                width={90}
+                height={90}
+              />
+            </span>
             <span>
               <strong>Parejita</strong>
               <small>12 sitios por probar</small>
             </span>
-            <span className={styles.twoAvatars}>P · L</span>
+            <AvatarStack small twoOnly />
           </div>
         </div>
       </Reveal>
@@ -433,7 +414,12 @@ function FeatureGrid() {
           </div>
           <div className={styles.savedFront}>
             <div className={styles.savedArt}>
-              <DishArtwork />
+              <Image
+                src="/images/mesa-japanese-table.webp"
+                alt="Platos de La Terrassa"
+                width={148}
+                height={148}
+              />
             </div>
             <span>
               <strong>La Terrassa</strong>
@@ -460,7 +446,9 @@ function FeatureGrid() {
               <strong>Casa Nómada</strong>
               <small>Mediterránea · €€</small>
             </span>
-            <span className={styles.match}>4 ♥</span>
+            <span className={styles.match}>
+              <Heart size={13} fill="currentColor" /> 4
+            </span>
           </div>
           <div>
             <span className={styles.rank}>2</span>
@@ -468,7 +456,9 @@ function FeatureGrid() {
               <strong>Umami Club</strong>
               <small>Japonesa · €€</small>
             </span>
-            <span className={styles.match}>3 ♥</span>
+            <span className={styles.match}>
+              <Heart size={13} fill="currentColor" /> 3
+            </span>
           </div>
           <button type="button">
             Ver opciones <ArrowRight size={15} />
@@ -642,11 +632,6 @@ export function LandingPage() {
         </section>
 
         <section className={styles.waitlistSection} id="lista">
-          <div className={styles.waitlistDecor} aria-hidden="true">
-            <span>🍜</span>
-            <span>🍷</span>
-            <span>♥</span>
-          </div>
           <Reveal className={styles.waitlistContent}>
             <span className={styles.darkEyebrow}>
               <Bell size={14} /> Tu sitio está casi listo

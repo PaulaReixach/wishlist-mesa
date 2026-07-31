@@ -87,7 +87,7 @@ export async function POST(request: Request) {
       name: `MESA beta launch · ${campaignId}`,
       from: config.from,
       replyTo: config.replyTo,
-      subject: "La mesa está lista: ya puedes entrar en la beta 🎉",
+      subject: "La mesa está lista: ya puedes entrar en la beta",
       previewText: "Tu acceso a la beta privada de MESA ya está disponible.",
       html: betaLaunchEmailHtml(),
       text: betaLaunchEmailText,

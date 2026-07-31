@@ -148,7 +148,7 @@ export async function POST(request: Request) {
       from,
       to: email,
       replyTo,
-      subject: "Te hemos guardado un sitio en MESA 🍽️",
+      subject: "Te hemos guardado un sitio en MESA",
       html: welcomeEmailHtml(),
       text: welcomeEmailText,
       tags: [{ name: "type", value: "waitlist-welcome" }],
