@@ -693,6 +693,177 @@ function SharedPlanShowcase() {
   );
 }
 
+const mapRestaurants = [
+  {
+    name: "Casa Nómada",
+    category: "Mediterránea · €€",
+    distance: "A 1,2 km",
+    rating: "4,7",
+    image: "/images/mesa-mediterranean-table.webp",
+    pinClass: styles.mapPinCasa,
+  },
+  {
+    name: "Koyo",
+    category: "Japonesa · €€",
+    distance: "A 850 m",
+    rating: "4,8",
+    image: "/images/mesa-japanese-table.webp",
+    pinClass: styles.mapPinKoyo,
+  },
+  {
+    name: "La Volta",
+    category: "Cocina local · €€",
+    distance: "A 1,6 km",
+    rating: "4,6",
+    image: "/images/mesa-mediterranean-table.webp",
+    pinClass: styles.mapPinVolta,
+  },
+];
+
+function MapShowcase() {
+  const reduceMotion = useReducedMotion();
+  const [activeRestaurant, setActiveRestaurant] = useState(0);
+  const [saved, setSaved] = useState(false);
+  const active = mapRestaurants[activeRestaurant];
+
+  function selectRestaurant(index: number) {
+    setActiveRestaurant(index);
+    setSaved(false);
+  }
+
+  return (
+    <Reveal className={styles.mapShowcase}>
+      <div className={styles.mapNarrative}>
+        <span className={styles.mapEyebrow}>
+          <Compass size={15} /> Explorar con MESA
+        </span>
+        <h2>
+          Vuestro próximo sitio <em>empieza en el mapa.</em>
+        </h2>
+        <p>
+          Buscad cerca, explorad cualquier zona y guardad el restaurante en el
+          grupo sin perderlo entre enlaces y capturas.
+        </p>
+
+        <div className={styles.mapBenefits}>
+          <span>
+            <MapPin size={17} />
+            <span>
+              <strong>Cualquier zona</strong>
+              <small>Cerca de ti o donde vaya a ser el plan.</small>
+            </span>
+          </span>
+          <span>
+            <Heart size={17} />
+            <span>
+              <strong>Directo al grupo</strong>
+              <small>Un toque y todo el mundo lo tiene a mano.</small>
+            </span>
+          </span>
+        </div>
+
+        <div className={styles.mapGroup}>
+          <AvatarStack small />
+          <span>
+            <small>Explorando para</small>
+            <strong>Plan de viernes</strong>
+          </span>
+          <span className={styles.mapGroupCount}>8 guardados</span>
+        </div>
+      </div>
+
+      <div className={styles.mapCanvas} aria-label="Demostración del mapa de MESA">
+        <div className={styles.mapRoads} aria-hidden="true" />
+        <div className={styles.mapToolbar}>
+          <span className={styles.mapSearch}>
+            <Search size={16} />
+            <span>
+              <small>Explorando</small>
+              <strong>Girona · centro</strong>
+            </span>
+          </span>
+          <span className={styles.mapNearChip}>
+            <MapPin size={14} /> Cerca de mí
+          </span>
+        </div>
+
+        <span className={`${styles.mapAreaLabel} ${styles.mapAreaOldTown}`}>
+          Centro histórico
+        </span>
+        <span className={`${styles.mapAreaLabel} ${styles.mapAreaRiver}`}>
+          Río
+        </span>
+
+        <span className={styles.currentLocation} aria-label="Tu ubicación">
+          <i />
+        </span>
+
+        {mapRestaurants.map((restaurant, index) => {
+          const selected = index === activeRestaurant;
+
+          return (
+            <button
+              className={`${styles.mapRestaurantPin} ${restaurant.pinClass} ${
+                selected ? styles.mapRestaurantPinActive : ""
+              }`}
+              type="button"
+              aria-label={`Ver ${restaurant.name}`}
+              aria-pressed={selected}
+              onClick={() => selectRestaurant(index)}
+              key={restaurant.name}
+            >
+              <MapPin size={20} fill="currentColor" />
+              <span>{restaurant.name}</span>
+            </button>
+          );
+        })}
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.article
+            className={styles.mapRestaurantCard}
+            key={active.name}
+            initial={reduceMotion ? false : { opacity: 0, y: 12, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: 8 }}
+            transition={{ duration: 0.3, ease }}
+          >
+            <div className={styles.mapRestaurantImage}>
+              <Image
+                src={active.image}
+                alt={`Mesa de ${active.name}`}
+                fill
+                sizes="(max-width: 620px) 90vw, 150px"
+              />
+            </div>
+            <div className={styles.mapRestaurantInfo}>
+              <span className={styles.mapRestaurantMeta}>
+                <span>{active.category}</span>
+                <strong>
+                  <Star size={11} fill="currentColor" /> {active.rating}
+                </strong>
+              </span>
+              <h3>{active.name}</h3>
+              <p>
+                <MapPin size={12} /> {active.distance}
+              </p>
+              <button
+                className={`${styles.mapSaveButton} ${saved ? styles.mapSaveButtonSaved : ""}`}
+                type="button"
+                onClick={() => setSaved((current) => !current)}
+              >
+                {saved ? <Check size={15} /> : <Heart size={15} />}
+                {saved ? "Guardado en el grupo" : "Guardar en Plan de viernes"}
+              </button>
+            </div>
+          </motion.article>
+        </AnimatePresence>
+
+        <span className={styles.mapHint}>Pulsa un marcador para explorar</span>
+      </div>
+    </Reveal>
+  );
+}
+
 export function LandingPage() {
   const reduceMotion = useReducedMotion();
 
@@ -801,28 +972,7 @@ export function LandingPage() {
         </section>
 
         <section className={styles.storySection}>
-          <div className={styles.storyPattern} aria-hidden="true" />
-          <Reveal className={styles.storyCard}>
-            <div className={styles.mapWrap}>
-              <Map className={styles.mapIcon} />
-              <span className={styles.mapPin}>
-                <MapPin size={18} />
-              </span>
-            </div>
-            <div className={styles.storyCopy}>
-              <span className={styles.eyebrow}>Explorad el mapa</span>
-              <h2>Vuestro próximo restaurante, siempre a la vista.</h2>
-              <p>
-                Descubrid qué tenéis cerca o explorad cualquier zona desde el
-                mapa. Guardad los sitios que os gusten en vuestro grupo y
-                volved a encontrarlos cuando llegue el momento de decidir.
-              </p>
-            </div>
-            <div className={styles.storyQuote}>
-              <Compass size={24} />
-              <p>“Explorad por la zona. Guardad lo que os guste. Elegid juntos.”</p>
-            </div>
-          </Reveal>
+          <MapShowcase />
         </section>
 
         <section className={styles.waitlistSection} id="lista">
