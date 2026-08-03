@@ -784,7 +784,7 @@ function MapShowcase() {
               onClick={() => selectRestaurant(index)}
               key={restaurant.name}
             >
-              <MapPin size={17} strokeWidth={2.25} aria-hidden="true" />
+              <span className={styles.mapPinDot} aria-hidden="true" />
             </button>
           );
         })}
