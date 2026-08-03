@@ -123,7 +123,7 @@ export function launchEmailHtml() {
     buttonLabel: "Descargar MESA",
     buttonUrl: appUrl(),
     footer:
-      'Gracias por haber formado parte de la lista de MESA. <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#736a66;">No quiero recibir más correos</a>.',
+      'Gracias por haber formado parte de la lista de MESA. <a href="{{ unsubscribe }}" style="color:#736a66;">No quiero recibir más correos</a>.',
   });
 }
 
@@ -136,5 +136,5 @@ Gracias por acompañarnos desde el principio. Crea vuestro primer grupo, reunid 
 
 Descargar MESA: ${appUrl()}
 
-No quiero recibir más correos: {{{RESEND_UNSUBSCRIBE_URL}}}`;
+No quiero recibir más correos: {{ unsubscribe }}`;
 }

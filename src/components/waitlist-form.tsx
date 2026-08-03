@@ -89,7 +89,7 @@ export function WaitlistForm({ variant = "hero" }: WaitlistFormProps) {
           </strong>
           <small>
             {state.preview
-              ? "Modo local: conecta Resend para recibir el correo real."
+              ? "Modo local: conecta Brevo para recibir el correo real."
               : state.emailSent
                 ? "Revisa tu bandeja de entrada. Te hemos enviado la bienvenida."
                 : "Tu correo está guardado. La confirmación puede tardar unos minutos."}
