@@ -1,0 +1,1048 @@
+"use client";
+
+import Image from "next/image";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+import {
+  ArrowDown,
+  ArrowRight,
+  Bell,
+  Check,
+  CheckCheck,
+  ChevronRight,
+  Compass,
+  Heart,
+  Home,
+  Map,
+  MapPin,
+  MoreHorizontal,
+  Plus,
+  Search,
+  SendHorizontal,
+  Star,
+  UserRound,
+  UsersRound,
+} from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { MesaLogo, MesaMark } from "@/components/brand";
+import { WaitlistForm } from "@/components/waitlist-form";
+import styles from "./landing-page.module.css";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const avatars = [
+  { src: "/images/avatar-paula.webp", alt: "Paula" },
+  { src: "/images/avatar-lucas.webp", alt: "Lucas" },
+  { src: "/images/avatar-ana.webp", alt: "Ana" },
+];
+
+function Reveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.65, delay, ease }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function AvatarStack({
+  small = false,
+  twoOnly = false,
+}: {
+  small?: boolean;
+  twoOnly?: boolean;
+}) {
+  const visibleAvatars = twoOnly ? avatars.slice(0, 2) : avatars;
+
+  return (
+    <span className={`${styles.avatarStack} ${small ? styles.avatarSmall : ""}`}>
+      {visibleAvatars.map((avatar) => (
+        <span className={styles.avatarFace} key={avatar.src}>
+          <Image src={avatar.src} alt={avatar.alt} width={40} height={40} />
+        </span>
+      ))}
+      {!twoOnly && <span className={styles.avatarMore}>+2</span>}
+    </span>
+  );
+}
+
+function PhonePreview() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <div className={styles.phoneStage} aria-label="Vista previa de la app MESA">
+      <motion.div
+        className={`${styles.floatingChip} ${styles.chipTop}`}
+        animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <span className={styles.chipIcon}>
+          <Heart size={15} fill="currentColor" />
+        </span>
+        Guardado en Parejita
+      </motion.div>
+
+      <motion.div
+        className={`${styles.floatingChip} ${styles.chipBottom}`}
+        animate={reduceMotion ? undefined : { y: [0, 9, 0] }}
+        transition={{
+          duration: 4.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.4,
+        }}
+      >
+        <AvatarStack small />
+        <span>
+          <strong>Plan de viernes</strong>
+          <small>5 personas</small>
+        </span>
+      </motion.div>
+
+      <motion.div
+        className={styles.phone}
+        initial={reduceMotion ? false : { opacity: 0, y: 28, rotate: -2 }}
+        animate={reduceMotion ? undefined : { opacity: 1, y: 0, rotate: 3.2 }}
+        transition={{ duration: 0.9, delay: 0.35, ease }}
+      >
+        <div className={styles.phoneTop}>
+          <span>9:41</span>
+          <span className={styles.dynamicIsland} />
+          <span className={styles.phoneSignals}>
+            <i />
+            <i />
+            <i />
+          </span>
+        </div>
+        <div className={styles.appHeader}>
+          <div>
+            <span className={styles.appEyebrow}>Hola, Paula</span>
+            <h3>¿Qué te apetece hoy?</h3>
+          </div>
+          <span className={styles.appAvatar}>
+            <Image
+              src="/images/avatar-paula.webp"
+              alt="Foto de perfil de Paula"
+              width={36}
+              height={36}
+            />
+          </span>
+        </div>
+        <div className={styles.appSearch}>
+          <Search size={15} />
+          <span>Restaurantes, cocinas…</span>
+          <span className={styles.filterButton}>
+            <Map size={14} />
+          </span>
+        </div>
+        <div className={styles.appSectionTitle}>
+          <strong>Mis grupos</strong>
+          <span>
+            Ver todos <ChevronRight size={12} />
+          </span>
+        </div>
+        <div className={styles.appGroups}>
+          <div className={styles.appGroup}>
+            <div className={styles.groupThumb}>
+              <Image
+                src="/images/mesa-mediterranean-table.webp"
+                alt="Mesa de cocina mediterránea"
+                width={80}
+                height={80}
+              />
+            </div>
+            <div>
+              <strong>Plan de viernes</strong>
+              <small>8 restaurantes</small>
+            </div>
+            <AvatarStack small />
+          </div>
+          <div className={styles.appGroup}>
+            <div className={styles.groupThumb}>
+              <Image
+                src="/images/mesa-japanese-table.webp"
+                alt="Mesa de cocina japonesa"
+                width={80}
+                height={80}
+              />
+            </div>
+            <div>
+              <strong>Parejita</strong>
+              <small>12 restaurantes</small>
+            </div>
+            <AvatarStack small twoOnly />
+          </div>
+        </div>
+        <div className={styles.appSectionTitle}>
+          <strong>Puede que te guste</strong>
+          <span>
+            Explorar <ChevronRight size={12} />
+          </span>
+        </div>
+        <div className={styles.restaurantCard}>
+          <div className={styles.restaurantImage}>
+            <Image
+              src="/images/mesa-mediterranean-table.webp"
+              alt="Platos de Casa Nómada"
+              fill
+              sizes="280px"
+            />
+            <span className={styles.heartButton}>
+              <Heart size={15} fill="currentColor" />
+            </span>
+            <span className={styles.ratingBadge}>
+              <Star size={11} fill="currentColor" /> 4,7
+            </span>
+          </div>
+          <div className={styles.restaurantInfo}>
+            <div>
+              <strong>Casa Nómada</strong>
+              <small>Mediterránea · €€</small>
+            </div>
+            <span>
+              <MapPin size={11} /> 1,2 km
+            </span>
+          </div>
+        </div>
+        <nav className={styles.appNav} aria-label="Navegación de ejemplo">
+          <span className={styles.navActive}>
+            <Home size={18} />
+            Inicio
+          </span>
+          <span>
+            <Compass size={18} />
+            Explorar
+          </span>
+          <span className={styles.navAdd}>
+            <Plus size={22} />
+          </span>
+          <span>
+            <UsersRound size={18} />
+            Grupos
+          </span>
+          <span>
+            <UserRound size={18} />
+            Perfil
+          </span>
+        </nav>
+      </motion.div>
+    </div>
+  );
+}
+
+const steps = [
+  {
+    number: "01",
+    icon: UsersRound,
+    tab: "Reunid",
+    label: "Vuestro grupo",
+    title: "El plan empieza con vuestra gente.",
+    text: "Cread el grupo e invitad a quienes se van a sentar a la mesa.",
+    image: "/images/mesa-mediterranean-table.webp",
+    imageAlt: "Amigos compartiendo una mesa mediterránea",
+  },
+  {
+    number: "02",
+    icon: Heart,
+    tab: "Guardad",
+    label: "Wishlist compartida",
+    title: "Todo lo que os gusta, junto.",
+    text: "Guardad restaurantes en el mismo sitio, sin perder enlaces en el chat.",
+    image: "/images/mesa-japanese-table.webp",
+    imageAlt: "Selección de platos japoneses para compartir",
+  },
+  {
+    number: "03",
+    icon: Check,
+    tab: "Elegid",
+    label: "Plan decidido",
+    title: "Una elección que os encaja.",
+    text: "Comparad favoritos, elegid restaurante y dejad de darle vueltas.",
+    image: "/images/mesa-mediterranean-table.webp",
+    imageAlt: "Mesa del restaurante elegido por el grupo",
+  },
+];
+
+function StepsExperience() {
+  const reduceMotion = useReducedMotion();
+  const [activeStep, setActiveStep] = useState(0);
+
+  const active = steps[activeStep];
+  const ActiveIcon = active.icon;
+
+  return (
+    <div className={styles.stepsExperience}>
+      <div className={styles.stepList} role="tablist" aria-label="Cómo funciona MESA">
+        {steps.map((step, index) => {
+          const selected = index === activeStep;
+
+          return (
+            <button
+              className={`${styles.stepButton} ${selected ? styles.stepButtonActive : ""}`}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              aria-controls="mesa-step-visual"
+              onClick={() => setActiveStep(index)}
+              key={step.number}
+            >
+              <span className={styles.stepNumber}>{step.number}</span>
+              <span className={styles.stepButtonCopy}>
+                <strong>{step.tab}</strong>
+                <small>{step.label}</small>
+              </span>
+              <ArrowRight className={styles.stepArrow} size={18} />
+            </button>
+          );
+        })}
+      </div>
+
+      <div className={styles.stepVisual} id="mesa-step-visual" role="tabpanel">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            className={styles.visualFrame}
+            key={active.number}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduceMotion ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.35, ease }}
+          >
+            <Image
+              src={active.image}
+              alt={active.imageAlt}
+              fill
+              sizes="(max-width: 860px) 94vw, 720px"
+              priority={activeStep === 0}
+            />
+            <div className={styles.visualShade} />
+            <span className={styles.visualCount}>{active.number} / 03</span>
+            <div className={styles.visualCard}>
+              <span className={styles.visualLabel}>
+                <ActiveIcon size={16} /> {active.label}
+              </span>
+              <h3>{active.title}</h3>
+              <p>{active.text}</p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+function ChatCard() {
+  const reduceMotion = useReducedMotion();
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const [started, setStarted] = useState(false);
+  const [chatStep, setChatStep] = useState(0);
+  const [draft, setDraft] = useState("");
+  const [demoMessages, setDemoMessages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!started) {
+      return;
+    }
+
+    if (reduceMotion) {
+      return;
+    }
+
+    const timings = [220, 920, 1700, 2450, 3200, 4100];
+    const timers = timings.map((delay, index) =>
+      window.setTimeout(
+        () => setChatStep((current) => Math.max(current, index + 1)),
+        delay,
+      ),
+    );
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [reduceMotion, started]);
+
+  useEffect(() => {
+    const viewport = messagesRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      viewport.scrollTo({
+        top: viewport.scrollHeight,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [chatStep, demoMessages, reduceMotion]);
+
+  function sendDemoMessage(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const message = draft.trim();
+
+    if (!message) {
+      return;
+    }
+
+    setDemoMessages((current) => [...current, message]);
+    setChatStep((current) => Math.max(current, 6));
+    setDraft("");
+  }
+
+  const messageMotion = {
+    initial: reduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: { duration: 0.38, ease },
+  } as const;
+
+  return (
+    <motion.div
+      className={styles.chatCard}
+      onViewportEnter={() => {
+        setStarted(true);
+        if (reduceMotion) {
+          setChatStep(6);
+        }
+      }}
+      viewport={{ once: true, amount: 0.45 }}
+    >
+      <div className={styles.chatHeader}>
+        <span className={styles.chatGroupAvatar}>
+          {avatars.slice(0, 3).map((avatar) => (
+            <span key={avatar.src}>
+              <Image src={avatar.src} alt="" width={34} height={34} />
+            </span>
+          ))}
+        </span>
+        <div>
+          <strong>Plan de viernes</strong>
+          <span className={styles.chatStatus}>
+            <i /> 5 participantes
+          </span>
+        </div>
+        <button className={styles.chatDots} type="button" aria-label="Más opciones">
+          <MoreHorizontal size={19} />
+        </button>
+      </div>
+      <div className={styles.messages} ref={messagesRef} aria-live="polite">
+        <span className={styles.chatDate}>Hoy</span>
+        <AnimatePresence initial={false}>
+          {chatStep >= 1 && (
+            <motion.div
+              className={styles.messageRow}
+              key="lucas-question"
+              layout
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-lucas.webp"
+                  alt="Lucas"
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <div className={styles.messageCluster}>
+                <span className={styles.messageAuthor}>Lucas</span>
+                <div className={`${styles.message} ${styles.messageOther}`}>
+                  <span>¿Dónde cenamos mañana? Llevo media hora buscando.</span>
+                  <small>19:42</small>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep >= 2 && (
+            <motion.div
+              className={`${styles.messageRow} ${styles.messageRowMine}`}
+              key="paula-link"
+              layout
+              {...messageMotion}
+            >
+              <div className={`${styles.message} ${styles.messageMe}`}>
+                <span>Yo tenía guardado un sitio, pero no encuentro el enlace.</span>
+                <small>
+                  19:43 <CheckCheck size={12} />
+                </small>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep >= 3 && (
+            <motion.div
+              className={styles.messageRow}
+              key="ana-mesa"
+              layout
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-ana.webp"
+                  alt="Ana"
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <div className={styles.messageCluster}>
+                <span className={styles.messageAuthor}>Ana</span>
+                <div className={`${styles.message} ${styles.messageOther}`}>
+                  <span>Lo guardé en nuestro grupo de MESA. Mirad:</span>
+                  <small>19:44</small>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep === 4 && (
+            <motion.div
+              className={styles.typingRow}
+              key="typing"
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-ana.webp"
+                  alt=""
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <span className={styles.typingBubble} aria-label="Ana está escribiendo">
+                <i />
+                <i />
+                <i />
+              </span>
+            </motion.div>
+          )}
+
+          {chatStep >= 5 && (
+            <motion.div
+              className={styles.chatRecommendation}
+              key="mesa-recommendation"
+              layout
+              {...messageMotion}
+            >
+              <div className={styles.recommendationVisual}>
+                <Image
+                  src="/images/mesa-mediterranean-table.webp"
+                  alt="Mesa de Casa Nómada"
+                  width={720}
+                  height={420}
+                />
+                <span className={styles.recommendationSource}>
+                  <MesaMark className={styles.recommendationMark} />
+                  Compartido desde MESA
+                </span>
+                <span className={styles.recommendationRating}>
+                  <Star size={11} fill="currentColor" /> 4,7
+                </span>
+                <span className={styles.recommendationIdentity}>
+                  <small>Mediterránea · €€ · 1,2 km</small>
+                  <strong>Casa Nómada</strong>
+                </span>
+              </div>
+              <div className={styles.recommendationFooter}>
+                <span className={styles.recommendationGroup}>
+                  <AvatarStack small />
+                  <span className={styles.recommendationPeople}>
+                    <strong>4 de 5 coinciden</strong>
+                    <small>Favorito del grupo</small>
+                  </span>
+                </span>
+                <span className={styles.recommendationAction}>
+                  Ver en MESA <ArrowRight size={14} />
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          {chatStep >= 6 && (
+            <motion.div
+              className={styles.messageRow}
+              key="lucas-final"
+              layout
+              {...messageMotion}
+            >
+              <span className={styles.messageAvatar}>
+                <Image
+                  src="/images/avatar-lucas.webp"
+                  alt="Lucas"
+                  width={30}
+                  height={30}
+                />
+              </span>
+              <div className={styles.messageCluster}>
+                <span className={styles.messageAuthor}>Lucas</span>
+                <div className={`${styles.message} ${styles.messageOther}`}>
+                  <span>Casa Nómada entonces. Reservo a las 21:30.</span>
+                  <small>19:45</small>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {demoMessages.map((message, index) => (
+            <motion.div
+              className={`${styles.messageRow} ${styles.messageRowMine}`}
+              key={`demo-${index}-${message}`}
+              layout
+              {...messageMotion}
+            >
+              <div className={`${styles.message} ${styles.messageMe}`}>
+                <span>{message}</span>
+                <small>
+                  Ahora <CheckCheck size={12} />
+                </small>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+      <form className={styles.chatComposer} onSubmit={sendDemoMessage}>
+        <button className={styles.composerAdd} type="button" aria-label="Adjuntar">
+          <Plus size={17} />
+        </button>
+        <input
+          aria-label="Escribe un mensaje de prueba"
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          placeholder="Escribe un mensaje…"
+          maxLength={120}
+        />
+        <button
+          className={styles.composerSend}
+          type="submit"
+          aria-label="Enviar mensaje"
+          disabled={!draft.trim()}
+        >
+          <SendHorizontal size={16} />
+        </button>
+      </form>
+    </motion.div>
+  );
+}
+
+function SharedPlanShowcase() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <Reveal className={styles.sharedPlanShowcase}>
+      <div className={styles.sharedPlanImage}>
+        <Image
+          src="/images/mesa-friends-dinner.webp"
+          alt="Un grupo de amigos compartiendo una cena"
+          fill
+          sizes="(max-width: 860px) 100vw, 1160px"
+        />
+        <div className={styles.sharedPlanShade} aria-hidden="true" />
+
+        <div className={styles.sharedPlanCopy}>
+          <span className={styles.sharedPlanEyebrow}>
+            <UsersRound size={15} /> Hecha para compartir
+          </span>
+          <h2>
+            Todo el grupo. <em>Un solo plan.</em>
+          </h2>
+          <p>
+            Guardad restaurantes, comparad gustos y llegad a la mesa con la
+            decisión ya tomada.
+          </p>
+        </div>
+
+        <motion.aside
+          className={styles.sharedPlanCard}
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.45 }}
+          transition={{ duration: 0.6, delay: 0.18, ease }}
+        >
+          <div className={styles.sharedPlanCardTop}>
+            <span>Próxima mesa</span>
+            <span className={styles.sharedPlanConfirmed}>
+              <Check size={13} /> Plan cerrado
+            </span>
+          </div>
+          <strong>Casa Nómada</strong>
+          <p>Viernes 26 · 21:30</p>
+          <div className={styles.sharedPlanPeople}>
+            <AvatarStack small />
+            <span>5 confirmados</span>
+          </div>
+        </motion.aside>
+      </div>
+    </Reveal>
+  );
+}
+
+const mapRestaurants = [
+  {
+    name: "Casa Nómada",
+    category: "Mediterránea · €€",
+    location: "Eixample · Barcelona",
+    rating: "4,7",
+    image: "/images/mesa-mediterranean-table.webp",
+    pinClass: styles.mapPinCasa,
+  },
+  {
+    name: "Koyo",
+    category: "Japonesa · €€",
+    location: "Gràcia · Barcelona",
+    rating: "4,8",
+    image: "/images/mesa-japanese-table.webp",
+    pinClass: styles.mapPinKoyo,
+  },
+  {
+    name: "La Volta",
+    category: "Cocina local · €€",
+    location: "El Born · Barcelona",
+    rating: "4,6",
+    image: "/images/mesa-mediterranean-table.webp",
+    pinClass: styles.mapPinVolta,
+  },
+];
+
+function MapShowcase() {
+  const reduceMotion = useReducedMotion();
+  const [activeRestaurant, setActiveRestaurant] = useState(0);
+  const [saved, setSaved] = useState(false);
+  const active = mapRestaurants[activeRestaurant];
+
+  function selectRestaurant(index: number) {
+    setActiveRestaurant(index);
+    setSaved(false);
+  }
+
+  return (
+    <Reveal className={styles.mapShowcase}>
+      <div className={styles.mapHeading}>
+        <span className={styles.mapEyebrow}>
+          <Compass size={15} /> El mapa de MESA
+        </span>
+        <h2>
+          Una ciudad entera. <em>Vuestra próxima mesa.</em>
+        </h2>
+        <p>
+          Explorad restaurantes en Barcelona —o en cualquier zona— y guardad
+          los que os gusten directamente en el grupo.
+        </p>
+      </div>
+
+      <div className={styles.mapCanvas}>
+        <iframe
+          className={styles.googleMap}
+          title="Mapa de Barcelona"
+          src="https://www.google.com/maps?ll=41.3874%2C2.1686&z=14&output=embed"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          tabIndex={-1}
+        />
+        <div className={styles.mapWash} aria-hidden="true" />
+
+        <div className={styles.mapToolbar}>
+          <span className={styles.mapSearch}>
+            <Search size={16} />
+            <span>
+              <small>Explorando restaurantes en</small>
+              <strong>Barcelona</strong>
+            </span>
+          </span>
+          <span className={styles.mapResultCount}>
+            <span /> 32 sitios cerca
+          </span>
+        </div>
+
+        {mapRestaurants.map((restaurant, index) => {
+          const selected = index === activeRestaurant;
+
+          return (
+            <button
+              className={`${styles.mapRestaurantPin} ${restaurant.pinClass} ${
+                selected ? styles.mapRestaurantPinActive : ""
+              }`}
+              type="button"
+              aria-label={`Ver ${restaurant.name}`}
+              aria-pressed={selected}
+              onClick={() => selectRestaurant(index)}
+              key={restaurant.name}
+            >
+              <span className={styles.mapPinDot} aria-hidden="true" />
+            </button>
+          );
+        })}
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.article
+            className={styles.mapRestaurantCard}
+            key={active.name}
+            initial={reduceMotion ? false : { opacity: 0, y: 12, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: 8 }}
+            transition={{ duration: 0.3, ease }}
+          >
+            <div className={styles.mapRestaurantImage}>
+              <Image
+                src={active.image}
+                alt={`Mesa de ${active.name}`}
+                fill
+                sizes="(max-width: 620px) 90vw, 150px"
+              />
+            </div>
+            <div className={styles.mapRestaurantInfo}>
+              <span className={styles.mapRestaurantMeta}>
+                <span>{active.category}</span>
+                <strong>
+                  <Star size={11} fill="currentColor" /> {active.rating}
+                </strong>
+              </span>
+              <h3>{active.name}</h3>
+              <p>
+                <MapPin size={12} /> {active.location}
+              </p>
+              <button
+                className={`${styles.mapSaveButton} ${saved ? styles.mapSaveButtonSaved : ""}`}
+                type="button"
+                onClick={() => setSaved((current) => !current)}
+              >
+                {saved ? <Check size={15} /> : <Heart size={15} />}
+                {saved ? "Guardado en el grupo" : "Guardar en Plan de viernes"}
+              </button>
+            </div>
+          </motion.article>
+        </AnimatePresence>
+
+        <div className={styles.mapGroup}>
+          <AvatarStack small />
+          <span>
+            <small>Guardando para</small>
+            <strong>Plan de viernes</strong>
+          </span>
+          <span className={styles.mapGroupCount}>8 sitios</span>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+export function LandingPage() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <a href="#inicio" aria-label="MESA, volver al inicio">
+          <MesaLogo />
+        </a>
+        <nav className={styles.desktopNav} aria-label="Navegación principal">
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#dentro-de-mesa">Dentro de MESA</a>
+          <a href="#preguntas">Preguntas</a>
+        </nav>
+        <a className={styles.headerCta} href="#lista">
+          Acceso anticipado <ArrowRight size={16} />
+        </a>
+      </header>
+
+      <main>
+        <section className={styles.hero} id="inicio">
+          <div className={styles.heroGlow} aria-hidden="true" />
+          <div className={styles.heroGrid}>
+            <motion.div
+              className={styles.heroCopy}
+              initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, ease }}
+            >
+              <span className={styles.betaBadge}>
+                <span />
+                Beta privada · Muy pronto en Android
+              </span>
+              <h1>
+                Los mejores planes empiezan alrededor de una{" "}
+                <em>mesa.</em>
+              </h1>
+              <p>
+                Crea grupos, descubre restaurantes, guarda los que os encantan
+                y decidid juntos dónde será el próximo plan.
+              </p>
+              <div className={styles.heroForm}>
+                <WaitlistForm />
+              </div>
+              <div className={styles.heroTrust}>
+                <AvatarStack />
+                <span>
+                  <strong>Sé de las primeras personas en probar MESA</strong>
+                  <small>Acceso anticipado y novedades de la beta.</small>
+                </span>
+              </div>
+            </motion.div>
+            <PhonePreview />
+          </div>
+          <a className={styles.scrollHint} href="#problema" aria-label="Seguir leyendo">
+            Descubre MESA <ArrowDown size={15} />
+          </a>
+        </section>
+
+        <section className={styles.problemSection} id="problema">
+          <div className={styles.sectionInner}>
+            <Reveal className={styles.problemCopy}>
+              <span className={styles.eyebrow}>El chat de siempre, resuelto</span>
+              <h2>
+                De «¿dónde cenamos?» a <em>plan cerrado.</em>
+              </h2>
+              <p>
+                Enlaces perdidos, capturas, notas y un “me da igual” detrás de
+                otro. MESA convierte todo ese ruido en un espacio compartido,
+                visual y fácil de decidir.
+              </p>
+              <ul className={styles.checkList}>
+                <li>
+                  <Check size={16} /> Todas las opciones juntas
+                </li>
+                <li>
+                  <Check size={16} /> Cada grupo tiene su propia wishlist
+                </li>
+                <li>
+                  <Check size={16} /> Más tiempo disfrutando, menos organizando
+                </li>
+              </ul>
+            </Reveal>
+            <Reveal className={styles.chatWrap} delay={0.12}>
+              <ChatCard />
+            </Reveal>
+          </div>
+        </section>
+
+        <section className={styles.stepsSection} id="como-funciona">
+          <div className={styles.stepsHeading}>
+            <Reveal>
+              <span className={styles.eyebrow}>Así funciona</span>
+              <h2>Tres pasos. Una mesa elegida.</h2>
+              <p>
+                Creáis el grupo, guardáis lo que os gusta y decidís juntos.
+                Pulsa cada paso para verlo.
+              </p>
+            </Reveal>
+          </div>
+          <StepsExperience />
+        </section>
+
+        <section className={styles.featuresSection} id="dentro-de-mesa">
+          <SharedPlanShowcase />
+        </section>
+
+        <section className={styles.storySection}>
+          <MapShowcase />
+        </section>
+
+        <section className={styles.waitlistSection} id="lista">
+          <Reveal className={styles.waitlistContent}>
+            <span className={styles.darkEyebrow}>
+              <Bell size={14} /> Tu sitio está casi listo
+            </span>
+            <h2>La primera ronda empieza pronto.</h2>
+            <p>
+              Apúntate a la beta privada. Te enviaremos una bienvenida ahora y
+              otro correo cuando puedas empezar a usar MESA.
+            </p>
+            <div className={styles.ctaForm}>
+              <WaitlistForm variant="cta" />
+            </div>
+          </Reveal>
+        </section>
+
+        <section className={styles.faqSection} id="preguntas">
+          <Reveal className={styles.faqHeading}>
+            <span className={styles.eyebrow}>Antes de sentarnos</span>
+            <h2>Preguntas frecuentes</h2>
+          </Reveal>
+          <div className={styles.faqList}>
+            <Reveal>
+              <details>
+                <summary>
+                  ¿Cuándo estará disponible la beta?
+                  <Plus size={18} />
+                </summary>
+                <p>
+                  Estamos ultimando la primera beta privada. Las personas de la
+                  lista serán las primeras en recibir la fecha y el acceso.
+                </p>
+              </details>
+            </Reveal>
+            <Reveal delay={0.04}>
+              <details>
+                <summary>
+                  ¿En qué dispositivos podré usar MESA?
+                  <Plus size={18} />
+                </summary>
+                <p>
+                  La primera beta está pensada para Android. Más adelante
+                  compartiremos novedades sobre otras plataformas.
+                </p>
+              </details>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <details>
+                <summary>
+                  ¿Apuntarme me compromete a algo?
+                  <Plus size={18} />
+                </summary>
+                <p>
+                  No. Solo recibirás información relevante sobre la beta y
+                  podrás darte de baja cuando quieras.
+                </p>
+              </details>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <details>
+                <summary>
+                  ¿Podré invitar a mis amigos?
+                  <Plus size={18} />
+                </summary>
+                <p>
+                  Esa es la idea: MESA cobra vida en grupo. Te explicaremos
+                  cómo invitarles cuando recibas tu acceso.
+                </p>
+              </details>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerTop}>
+          <MesaLogo light />
+          <p>Descubrir. Guardar. Compartir. Decidir.</p>
+          <a href="#inicio">
+            Volver arriba <ArrowRight size={15} />
+          </a>
+        </div>
+        <div className={styles.footerBottom}>
+          <span>© {new Date().getFullYear()} MESA</span>
+          <span className={styles.footerMade}>
+            Hecho con intención para planes de verdad.
+          </span>
+          <a href="/privacidad">Privacidad</a>
+        </div>
+      </footer>
+    </div>
+  );
+}

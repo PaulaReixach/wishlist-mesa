@@ -1,0 +1,221 @@
+.wrapper {
+  width: 100%;
+}
+
+.form {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.inputWrap {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 17px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(72, 38, 43, 0.13);
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(72, 38, 43, 0.06);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.inputWrap:focus-within {
+  border-color: rgba(201, 99, 75, 0.72);
+  box-shadow: 0 0 0 4px rgba(201, 99, 75, 0.11);
+}
+
+.inputWrap input {
+  width: 100%;
+  min-width: 0;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 1rem;
+}
+
+.inputWrap input::placeholder {
+  color: #9d938d;
+}
+
+.form button {
+  display: inline-flex;
+  min-width: 166px;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 21px;
+  color: var(--white);
+  background: var(--wine-900);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(47, 23, 27, 0.2);
+  cursor: pointer;
+  font-weight: 750;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.form button:hover:not(:disabled) {
+  background: var(--terracotta-600);
+  box-shadow: 0 14px 28px rgba(169, 77, 58, 0.24);
+  transform: translateY(-2px);
+}
+
+.form button:disabled {
+  cursor: wait;
+  opacity: 0.76;
+}
+
+.privacy {
+  min-height: 20px;
+  margin-top: 11px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.privacy a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.error {
+  color: #a43b31;
+  font-weight: 650;
+}
+
+.success {
+  display: flex;
+  width: 100%;
+  min-height: 76px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  color: var(--wine-900);
+  background: #f4f3e8;
+  border: 1px solid rgba(83, 91, 59, 0.18);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+}
+
+.successIcon {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--white);
+  background: var(--olive-700);
+  border-radius: 50%;
+}
+
+.success strong,
+.success small {
+  display: block;
+}
+
+.success strong {
+  margin-bottom: 4px;
+  font-size: 0.96rem;
+}
+
+.success small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.cta .form button {
+  color: var(--wine-900);
+  background: var(--cream-50);
+  box-shadow: 0 12px 24px rgba(28, 12, 15, 0.18);
+}
+
+.cta .form button:hover:not(:disabled) {
+  color: var(--white);
+  background: var(--terracotta-500);
+}
+
+.cta .inputWrap {
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.19);
+  box-shadow: none;
+}
+
+.cta .inputWrap input {
+  color: var(--white);
+}
+
+.cta .inputWrap input::placeholder {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.cta .privacy {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.cta .error {
+  color: #ffd0c5;
+}
+
+.cta.success {
+  color: var(--cream-50);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+}
+
+.cta.success small {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.spinner {
+  animation: spin 900ms linear infinite;
+}
+
+.honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  white-space: nowrap !important;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .form {
+    flex-direction: column;
+  }
+
+  .form button {
+    width: 100%;
+  }
+}
