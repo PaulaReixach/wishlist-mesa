@@ -1,11 +1,17 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt =
   "MESA — Los mejores planes empiezan alrededor de una mesa";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const runtime = "nodejs";
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const logoData = await readFile(join(process.cwd(), "public", "mesa-logo.png"));
+  const logoSource = `data:image/png;base64,${logoData.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -33,28 +39,23 @@ export default function OpenGraphImage() {
             background: "#f1ded5",
           }}
         />
-        <div
+        <img
+          src={logoSource}
+          alt=""
+          width="260"
+          height="260"
           style={{
             position: "absolute",
             width: 260,
             height: 260,
             right: 110,
             top: 90,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 74,
-            color: "#fffdf8",
-            background: "#c9634b",
-            fontFamily: "Arial, sans-serif",
-            fontWeight: 800,
-            fontSize: 120,
+            borderRadius: "50%",
             boxShadow: "0 30px 70px rgba(72,38,43,.2)",
+            objectFit: "contain",
             transform: "rotate(6deg)",
           }}
-        >
-          M
-        </div>
+        />
         <div
           style={{
             width: 720,

@@ -9,7 +9,9 @@
 
 .mark {
   grid-row: 1 / 3;
-  color: var(--terracotta-500);
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
 }
 
 .wordmark {
@@ -31,10 +33,6 @@
 
 .light {
   color: var(--cream-50);
-}
-
-.light .mark {
-  color: var(--terracotta-400);
 }
 
 .light .tagline {

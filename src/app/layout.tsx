@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   authors: [{ name: "MESA" }],
   creator: "MESA",
   icons: {
-    icon: "/logo-mark.svg",
-    apple: "/logo-mark.svg",
+    icon: "/mesa-logo.png",
+    apple: "/mesa-logo.png",
   },
   openGraph: {
     type: "website",

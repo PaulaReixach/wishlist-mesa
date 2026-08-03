@@ -1,4 +1,5 @@
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mesa.app";
+const logoUrl = `${siteUrl.replace(/\/$/, "")}/mesa-logo.png`;
 
 function emailShell({
   preheader,
@@ -34,7 +35,7 @@ function emailShell({
               <td style="padding:30px 36px;background:#2f171b;">
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                   <tr>
-                    <td width="44" height="44" align="center" style="background:#c9634b;border-radius:14px;color:#fffdf8;font-size:22px;font-weight:700;">M</td>
+                    <td width="44" height="44"><img src="${logoUrl}" width="44" height="44" alt="" style="display:block;width:44px;height:44px;border:0;"></td>
                     <td style="padding-left:12px;color:#fffdf8;font-size:18px;font-weight:800;letter-spacing:4px;">MESA</td>
                   </tr>
                 </table>
