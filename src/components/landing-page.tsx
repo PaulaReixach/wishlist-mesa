@@ -165,8 +165,8 @@ function PhonePreview() {
           <div className={styles.appGroup}>
             <div className={styles.groupThumb}>
               <Image
-                src="/images/mesa-mediterranean-table.webp"
-                alt="Mesa de cocina mediterránea"
+                src="/images/mesa-casa-nomada-tapas.webp"
+                alt="Paella de Casa Nómada en pleno servicio"
                 width={80}
                 height={80}
               />
@@ -180,8 +180,8 @@ function PhonePreview() {
           <div className={styles.appGroup}>
             <div className={styles.groupThumb}>
               <Image
-                src="/images/mesa-japanese-table.webp"
-                alt="Mesa de cocina japonesa"
+                src="/images/mesa-koyo-izakaya.webp"
+                alt="Sushi servido en Koyo"
                 width={80}
                 height={80}
               />
@@ -202,8 +202,8 @@ function PhonePreview() {
         <div className={styles.restaurantCard}>
           <div className={styles.restaurantImage}>
             <Image
-              src="/images/mesa-mediterranean-table.webp"
-              alt="Platos de Casa Nómada"
+              src="/images/mesa-casa-nomada-tapas.webp"
+              alt="Paella de Casa Nómada lista para compartir"
               fill
               sizes="280px"
             />
@@ -258,8 +258,8 @@ const steps = [
     label: "Vuestro grupo",
     title: "El plan empieza con vuestra gente.",
     text: "Cread el grupo e invitad a quienes se van a sentar a la mesa.",
-    image: "/images/mesa-mediterranean-table.webp",
-    imageAlt: "Amigos compartiendo una mesa mediterránea",
+    image: "/images/mesa-friends-restaurant.webp",
+    imageAlt: "Amigos compartiendo una cena en una terraza",
   },
   {
     number: "02",
@@ -268,8 +268,8 @@ const steps = [
     label: "Wishlist compartida",
     title: "Todo lo que os gusta, junto.",
     text: "Guardad restaurantes en el mismo sitio, sin perder enlaces en el chat.",
-    image: "/images/mesa-japanese-table.webp",
-    imageAlt: "Selección de platos japoneses para compartir",
+    image: "/images/mesa-koyo-izakaya.webp",
+    imageAlt: "Sushi servido en un restaurante",
   },
   {
     number: "03",
@@ -278,8 +278,8 @@ const steps = [
     label: "Plan decidido",
     title: "Una elección que os encaja.",
     text: "Comparad favoritos, elegid restaurante y dejad de darle vueltas.",
-    image: "/images/mesa-mediterranean-table.webp",
-    imageAlt: "Mesa del restaurante elegido por el grupo",
+    image: "/images/mesa-la-volta-seasonal.webp",
+    imageAlt: "Mesa compartida con platos de cocina local",
   },
 ];
 
@@ -543,8 +543,8 @@ function ChatCard() {
             >
               <div className={styles.recommendationVisual}>
                 <Image
-                  src="/images/mesa-mediterranean-table.webp"
-                  alt="Mesa de Casa Nómada"
+                  src="/images/mesa-casa-nomada-tapas.webp"
+                  alt="Paella de Casa Nómada"
                   width={720}
                   height={420}
                 />
@@ -648,8 +648,8 @@ function SharedPlanShowcase() {
     <Reveal className={styles.sharedPlanShowcase}>
       <div className={styles.sharedPlanImage}>
         <Image
-          src="/images/mesa-friends-dinner.webp"
-          alt="Un grupo de amigos compartiendo una cena"
+          src="/images/mesa-friends-restaurant.webp"
+          alt="Amigos compartiendo una cena en una terraza"
           fill
           sizes="(max-width: 860px) 100vw, 1160px"
         />
@@ -699,7 +699,8 @@ const mapRestaurants = [
     category: "Mediterránea · €€",
     location: "Eixample · Barcelona",
     rating: "4,7",
-    image: "/images/mesa-mediterranean-table.webp",
+    image: "/images/mesa-casa-nomada-tapas.webp",
+    imageAlt: "Paella de Casa Nómada en pleno servicio",
     pinClass: styles.mapPinCasa,
   },
   {
@@ -707,7 +708,8 @@ const mapRestaurants = [
     category: "Japonesa · €€",
     location: "Gràcia · Barcelona",
     rating: "4,8",
-    image: "/images/mesa-japanese-table.webp",
+    image: "/images/mesa-koyo-izakaya.webp",
+    imageAlt: "Sushi servido en Koyo",
     pinClass: styles.mapPinKoyo,
   },
   {
@@ -715,7 +717,8 @@ const mapRestaurants = [
     category: "Cocina local · €€",
     location: "El Born · Barcelona",
     rating: "4,6",
-    image: "/images/mesa-mediterranean-table.webp",
+    image: "/images/mesa-la-volta-seasonal.webp",
+    imageAlt: "Comensales compartiendo platos de cocina local",
     pinClass: styles.mapPinVolta,
   },
 ];
@@ -801,7 +804,7 @@ function MapShowcase() {
             <div className={styles.mapRestaurantImage}>
               <Image
                 src={active.image}
-                alt={`Mesa de ${active.name}`}
+                alt={active.imageAlt}
                 fill
                 sizes="(max-width: 620px) 90vw, 150px"
               />

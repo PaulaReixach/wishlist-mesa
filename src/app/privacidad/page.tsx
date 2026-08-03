@@ -81,7 +81,7 @@ export default function PrivacyPage() {
         <section>
           <h2>5. Proveedores y transferencias</h2>
           <p>
-            Para gestionar la lista y enviar los correos utilizamos Resend como
+            Para gestionar la lista y enviar los correos utilizamos Brevo como
             proveedor de email y el proveedor donde se aloje la web. Estos
             servicios tratan los datos únicamente para prestar su función y
             conforme a sus compromisos de privacidad.

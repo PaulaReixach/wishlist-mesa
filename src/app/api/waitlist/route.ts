@@ -1,11 +1,17 @@
-import { createHash } from "node:crypto";
-import { Resend } from "resend";
 import { z } from "zod";
+import {
+  BrevoHttpClient,
+  brevoErrorCode,
+  type BrevoClient,
+} from "@/lib/brevo";
 import { welcomeEmailHtml, welcomeEmailText } from "@/lib/emails";
 
 export const runtime = "nodejs";
 
-type WaitlistResendClient = Pick<Resend, "contacts" | "emails">;
+type WaitlistBrevoClient = Pick<
+  BrevoClient,
+  "contactExists" | "upsertContact" | "sendTransactionalEmail"
+>;
 
 const waitlistSchema = z.object({
   email: z
@@ -18,25 +24,20 @@ const waitlistSchema = z.object({
 });
 
 function configured() {
-  return Boolean(
-    process.env.RESEND_API_KEY &&
-      process.env.RESEND_SEGMENT_ID &&
-      process.env.RESEND_FROM_EMAIL &&
-      process.env.NEXT_PUBLIC_SITE_URL,
-  );
-}
+  const listId = Number(process.env.BREVO_LIST_ID);
 
-function isDuplicate(message: string, statusCode: number | null) {
-  return (
-    statusCode === 409 ||
-    message.toLowerCase().includes("already") ||
-    message.toLowerCase().includes("exists")
+  return Boolean(
+    process.env.BREVO_API_KEY &&
+      Number.isSafeInteger(listId) &&
+      listId > 0 &&
+      process.env.BREVO_SENDER_EMAIL &&
+      process.env.NEXT_PUBLIC_SITE_URL,
   );
 }
 
 export async function handleWaitlist(
   request: Request,
-  resendClient?: WaitlistResendClient,
+  brevoClient?: WaitlistBrevoClient,
 ) {
   const contentLength = Number(request.headers.get("content-length") ?? 0);
 
@@ -104,99 +105,43 @@ export async function handleWaitlist(
     );
   }
 
-  const resend =
-    resendClient ?? new Resend(process.env.RESEND_API_KEY as string);
-  const segmentId = process.env.RESEND_SEGMENT_ID as string;
-  const from = process.env.RESEND_FROM_EMAIL as string;
-  const replyTo = process.env.RESEND_REPLY_TO;
-  const hash = createHash("sha256").update(email).digest("hex").slice(0, 32);
+  const brevo =
+    brevoClient ?? new BrevoHttpClient(process.env.BREVO_API_KEY as string);
+  const listId = Number(process.env.BREVO_LIST_ID);
+  const sender = {
+    email: process.env.BREVO_SENDER_EMAIL as string,
+    name: process.env.BREVO_SENDER_NAME?.trim() || "MESA",
+  };
+  const replyTo = process.env.BREVO_REPLY_TO?.trim();
+  let alreadySubscribed: boolean;
 
-  const contactResult = await resend.contacts.create({
-    email,
-    unsubscribed: false,
-    segments: [{ id: segmentId }],
-  });
-
-  let alreadySubscribed = false;
-
-  if (contactResult.error) {
-    if (
-      !isDuplicate(
-        contactResult.error.message,
-        contactResult.error.statusCode,
-      )
-    ) {
-      console.error("Waitlist contact error:", contactResult.error.name);
-      return Response.json(
-        {
-          ok: false,
-          message:
-            "No hemos podido guardar tu correo. Inténtalo de nuevo dentro de un momento.",
-        },
-        { status: 502 },
-      );
-    }
-
-    alreadySubscribed = true;
-
-    // La persona ha vuelto a dar su consentimiento: reactivamos el contacto
-    // antes de añadirlo al segmento por si se había dado de baja previamente.
-    const updateResult = await resend.contacts.update({
-      email,
-      unsubscribed: false,
-    });
-
-    if (updateResult.error) {
-      console.error("Waitlist contact update error:", updateResult.error.name);
-      return Response.json(
-        {
-          ok: false,
-          message:
-            "No hemos podido reactivar tu acceso. Inténtalo de nuevo dentro de un momento.",
-        },
-        { status: 502 },
-      );
-    }
-
-    const segmentResult = await resend.contacts.segments.add({
-      email,
-      segmentId,
-    });
-
-    if (
-      segmentResult.error &&
-      !isDuplicate(
-        segmentResult.error.message,
-        segmentResult.error.statusCode,
-      )
-    ) {
-      console.error("Waitlist segment error:", segmentResult.error.name);
-      return Response.json(
-        {
-          ok: false,
-          message:
-            "No hemos podido actualizar tu acceso. Inténtalo de nuevo dentro de un momento.",
-        },
-        { status: 502 },
-      );
-    }
+  try {
+    alreadySubscribed = await brevo.contactExists(email);
+    await brevo.upsertContact(email, listId);
+  } catch (error) {
+    console.error("Waitlist contact error:", brevoErrorCode(error));
+    return Response.json(
+      {
+        ok: false,
+        message:
+          "No hemos podido guardar tu correo. Inténtalo de nuevo dentro de un momento.",
+      },
+      { status: 502 },
+    );
   }
 
-  const emailResult = await resend.emails.send(
-    {
-      from,
-      to: email,
-      replyTo,
+  try {
+    await brevo.sendTransactionalEmail({
+      sender,
+      to: [{ email }],
+      ...(replyTo ? { replyTo: { email: replyTo, name: "MESA" } } : {}),
       subject: "Te hemos guardado un sitio en MESA",
-      html: welcomeEmailHtml(),
-      text: welcomeEmailText(),
-      tags: [{ name: "type", value: "waitlist-welcome" }],
-    },
-    { idempotencyKey: `mesa-waitlist-${hash}` },
-  );
-
-  if (emailResult.error) {
-    console.error("Waitlist welcome error:", emailResult.error.name);
+      htmlContent: welcomeEmailHtml(),
+      textContent: welcomeEmailText(),
+      tags: ["mesa-waitlist-welcome"],
+    });
+  } catch (error) {
+    console.error("Waitlist welcome error:", brevoErrorCode(error));
     return Response.json({
       ok: true,
       preview: false,

@@ -1,11 +1,21 @@
 import { timingSafeEqual } from "node:crypto";
-import { Resend } from "resend";
 import { z } from "zod";
-import { launchEmailHtml, launchEmailText } from "@/lib/emails";
+import {
+  BrevoHttpClient,
+  brevoErrorCode,
+  type BrevoClient,
+} from "@/lib/brevo";
+import { launchEmailHtml } from "@/lib/emails";
 
 export const runtime = "nodejs";
 
-type LaunchResendClient = Pick<Resend, "broadcasts">;
+type LaunchBrevoClient = Pick<
+  BrevoClient,
+  | "findCampaignByName"
+  | "createCampaign"
+  | "scheduleCampaign"
+  | "sendCampaignNow"
+>;
 
 const launchSchema = z.object({
   confirmation: z.literal("ENVIAR LANZAMIENTO MESA"),
@@ -36,7 +46,7 @@ function secretsMatch(provided: string, expected: string) {
 
 export async function handleLaunch(
   request: Request,
-  resendClient?: LaunchResendClient,
+  brevoClient?: LaunchBrevoClient,
 ) {
   const expectedSecret =
     process.env.MESA_LAUNCH_SECRET ?? process.env.BETA_LAUNCH_SECRET;
@@ -54,14 +64,21 @@ export async function handleLaunch(
   }
 
   const config = {
-    apiKey: process.env.RESEND_API_KEY,
-    segmentId: process.env.RESEND_SEGMENT_ID,
-    from: process.env.RESEND_FROM_EMAIL,
-    replyTo: process.env.RESEND_REPLY_TO,
+    apiKey: process.env.BREVO_API_KEY,
+    listId: Number(process.env.BREVO_LIST_ID),
+    senderEmail: process.env.BREVO_SENDER_EMAIL,
+    senderName: process.env.BREVO_SENDER_NAME?.trim() || "MESA",
+    replyTo: process.env.BREVO_REPLY_TO,
     appUrl: process.env.MESA_APP_URL,
   };
 
-  if (!config.apiKey || !config.segmentId || !config.from || !config.appUrl) {
+  if (
+    !config.apiKey ||
+    !Number.isSafeInteger(config.listId) ||
+    config.listId <= 0 ||
+    !config.senderEmail ||
+    !config.appUrl
+  ) {
     return Response.json(
       { ok: false, message: "La configuración de email está incompleta." },
       { status: 503 },
@@ -93,41 +110,63 @@ export async function handleLaunch(
     );
   }
 
-  const resend = resendClient ?? new Resend(config.apiKey);
+  const brevo = brevoClient ?? new BrevoHttpClient(config.apiKey);
   const { campaignId, scheduledAt } = parsed.data;
-  const result = await resend.broadcasts.create(
-    {
-      segmentId: config.segmentId,
-      name: `MESA app launch · ${campaignId}`,
-      from: config.from,
+  const campaignName = `MESA app launch · ${campaignId}`;
+
+  try {
+    const existingCampaign = await brevo.findCampaignByName(campaignName);
+
+    if (existingCampaign) {
+      if (existingCampaign.status === "draft") {
+        if (scheduledAt) {
+          await brevo.scheduleCampaign(existingCampaign.id, scheduledAt);
+        } else {
+          await brevo.sendCampaignNow(existingCampaign.id);
+        }
+      }
+
+      return Response.json({
+        ok: true,
+        campaignId: existingCampaign.id,
+        scheduled:
+          Boolean(scheduledAt) || existingCampaign.status === "scheduled",
+        alreadyCreated: true,
+      });
+    }
+
+    const createdCampaignId = await brevo.createCampaign({
+      name: campaignName,
+      sender: {
+        email: config.senderEmail,
+        name: config.senderName,
+      },
       replyTo: config.replyTo,
       subject: "La mesa está lista: MESA ya está disponible",
       previewText: "Ya puedes descargar MESA y crear vuestro primer grupo.",
-      html: launchEmailHtml(),
-      text: launchEmailText(),
-      send: true,
+      htmlContent: launchEmailHtml(),
+      recipients: { listIds: [config.listId] },
       scheduledAt,
-    },
-    {
-      headers: {
-        "Idempotency-Key": `mesa-app-launch-${campaignId}`,
-      },
-    },
-  );
+      tag: `mesa-launch-${campaignId}`,
+    });
 
-  if (result.error) {
-    console.error("App launch broadcast error:", result.error.name);
+    if (!scheduledAt) {
+      await brevo.sendCampaignNow(createdCampaignId);
+    }
+
+    return Response.json({
+      ok: true,
+      campaignId: createdCampaignId,
+      scheduled: Boolean(scheduledAt),
+      alreadyCreated: false,
+    });
+  } catch (error) {
+    console.error("App launch campaign error:", brevoErrorCode(error));
     return Response.json(
       { ok: false, message: "No se ha podido crear el envío de lanzamiento." },
       { status: 502 },
     );
   }
-
-  return Response.json({
-    ok: true,
-    broadcastId: result.data.id,
-    scheduled: Boolean(scheduledAt),
-  });
 }
 
 export async function POST(request: Request) {
