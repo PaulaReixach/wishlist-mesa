@@ -1,5 +1,13 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mesa.app";
-const logoUrl = `${siteUrl.replace(/\/$/, "")}/mesa-logo.png`;
+function siteUrl() {
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
+    /\/$/,
+    "",
+  );
+}
+
+function appUrl() {
+  return (process.env.MESA_APP_URL ?? siteUrl()).replace(/\/$/, "");
+}
 
 function emailShell({
   preheader,
@@ -18,6 +26,8 @@ function emailShell({
   buttonUrl: string;
   footer: string;
 }) {
+  const logoUrl = `${siteUrl()}/mesa-logo.png`;
+
   return `<!doctype html>
 <html lang="es">
   <head>
@@ -69,53 +79,62 @@ function emailShell({
 }
 
 export function welcomeEmailHtml() {
+  const publicSiteUrl = siteUrl();
+
   return emailShell({
     preheader: "Tu sitio en la beta privada de MESA está reservado.",
     eyebrow: "Ya estás dentro",
     title: "Te hemos guardado un sitio en la mesa.",
     body: `
-      <p style="margin:0 0 16px;">Gracias por apuntarte a la beta privada de <strong style="color:#2f171b;">MESA</strong>.</p>
-      <p style="margin:0;">Estamos preparando una forma más bonita de descubrir restaurantes, guardar los favoritos de cada grupo y decidir juntos el próximo plan. Cuando abramos la beta, serás de las primeras personas en saberlo.</p>
+      <p style="margin:0 0 16px;">Gracias por querer formar parte de la beta privada de <strong style="color:#2f171b;">MESA</strong>.</p>
+      <p style="margin:0;">Estamos preparando una forma más bonita de descubrir restaurantes, guardar los favoritos de cada grupo y decidir juntos el próximo plan. Te avisaremos de cualquier novedad importante y, por supuesto, el día que MESA esté disponible.</p>
     `,
     buttonLabel: "Descubrir MESA",
-    buttonUrl: siteUrl,
+    buttonUrl: publicSiteUrl,
     footer:
-      "Recibes este correo porque te has apuntado a la beta de MESA. Solo te escribiremos con novedades importantes sobre tu acceso.",
+      `Recibes este correo porque te has apuntado a la beta de MESA. Solo te escribiremos con novedades importantes sobre tu acceso. <a href="${publicSiteUrl}/privacidad" style="color:#736a66;">Consulta nuestra política de privacidad</a>.`,
   });
 }
 
-export const welcomeEmailText = `¡Ya estás dentro!
+export function welcomeEmailText() {
+  const publicSiteUrl = siteUrl();
+
+  return `¡Ya estás dentro!
 
 Te hemos guardado un sitio en la mesa.
 
-Gracias por apuntarte a la beta privada de MESA. Estamos preparando una forma más bonita de descubrir restaurantes, guardar los favoritos de cada grupo y decidir juntos el próximo plan.
+Gracias por querer formar parte de la beta privada de MESA. Estamos preparando una forma más bonita de descubrir restaurantes, guardar los favoritos de cada grupo y decidir juntos el próximo plan.
 
-Cuando abramos la beta, serás de las primeras personas en saberlo.
+Te avisaremos de cualquier novedad importante y, por supuesto, el día que MESA esté disponible.
 
-Descubre MESA: ${siteUrl}`;
+Descubre MESA: ${publicSiteUrl}
+Privacidad: ${publicSiteUrl}/privacidad`;
+}
 
-export function betaLaunchEmailHtml() {
+export function launchEmailHtml() {
   return emailShell({
-    preheader: "La beta privada de MESA ya está abierta.",
+    preheader: "MESA ya está disponible para descargar.",
     eyebrow: "La mesa está lista",
-    title: "Ya puedes empezar a usar MESA.",
+    title: "MESA ya está disponible.",
     body: `
-      <p style="margin:0 0 16px;">Ha llegado el momento: la beta privada de <strong style="color:#2f171b;">MESA</strong> ya está abierta.</p>
-      <p style="margin:0;">Gracias por acompañarnos desde el principio. Crea tu primer grupo, reúne esos restaurantes que siempre acabáis perdiendo en el chat y prepara vuestro próximo plan.</p>
+      <p style="margin:0 0 16px;">Ha llegado el momento: ya puedes descargar <strong style="color:#2f171b;">MESA</strong>.</p>
+      <p style="margin:0;">Gracias por acompañarnos desde el principio. Crea vuestro primer grupo, reunid esos restaurantes que siempre acabáis perdiendo en el chat y preparad el próximo plan juntos.</p>
     `,
-    buttonLabel: "Entrar en la beta",
-    buttonUrl: siteUrl,
+    buttonLabel: "Descargar MESA",
+    buttonUrl: appUrl(),
     footer:
-      'Gracias por formar parte de la beta de MESA. <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#736a66;">Darme de baja</a>.',
+      'Gracias por haber formado parte de la lista de MESA. <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#736a66;">No quiero recibir más correos</a>.',
   });
 }
 
-export const betaLaunchEmailText = `La mesa está lista.
+export function launchEmailText() {
+  return `La mesa está lista.
 
-Ya puedes empezar a usar MESA.
+MESA ya está disponible.
 
-Gracias por acompañarnos desde el principio. Crea tu primer grupo, reúne esos restaurantes que siempre acabáis perdiendo en el chat y prepara vuestro próximo plan.
+Gracias por acompañarnos desde el principio. Crea vuestro primer grupo, reunid esos restaurantes que siempre acabáis perdiendo en el chat y preparad el próximo plan juntos.
 
-Entrar en la beta: ${siteUrl}
+Descargar MESA: ${appUrl()}
 
-Darme de baja: {{{RESEND_UNSUBSCRIBE_URL}}}`;
+No quiero recibir más correos: {{{RESEND_UNSUBSCRIBE_URL}}}`;
+}

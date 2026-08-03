@@ -6,7 +6,8 @@ La web presenta el producto, muestra una vista previa de la experiencia móvil y
 
 - Registrar correos en un segmento de Resend.
 - Enviar un correo de bienvenida automático.
-- Preparar y enviar el correo de apertura de la beta a toda la lista.
+- Reactivar de forma segura a quien vuelva a dar su consentimiento.
+- Preparar y enviar el correo de lanzamiento a toda la lista.
 - Probar el formulario localmente sin credenciales reales.
 - Compartir la landing con metadatos SEO, imagen social, sitemap y robots.
 
@@ -38,37 +39,42 @@ npm run check
 1. Crea una cuenta en Resend.
 2. Verifica el dominio desde el que enviará MESA.
 3. Crea un segmento llamado, por ejemplo, `MESA Beta`.
-4. Copia `.env.example` como `.env.local`.
-5. Completa las variables:
+4. Crea una API key de Resend con permiso `Full access`. El permiso de solo
+   envío no puede crear contactos ni gestionar segmentos.
+5. Copia `.env.example` como `.env.local`.
+6. Completa las variables:
 
 ```dotenv
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 PRIVACY_CONTACT_EMAIL=hola@tu-dominio.com
+MESA_APP_URL=https://play.google.com/store/apps/details?id=tu.app.id
 RESEND_API_KEY=re_xxxxxxxxx
 RESEND_SEGMENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 RESEND_FROM_EMAIL=MESA <hola@tu-dominio.com>
 RESEND_REPLY_TO=hola@tu-dominio.com
-BETA_LAUNCH_SECRET=una-clave-larga-aleatoria-y-privada
+MESA_LAUNCH_SECRET=una-clave-larga-aleatoria-y-privada
 ```
 
-6. Reinicia `npm run dev`.
-7. Apúntate con un correo real y revisa tanto la bandeja de entrada como el segmento de Resend.
+7. Reinicia `npm run dev`.
+8. Apúntate con un correo real y revisa tanto la bandeja de entrada como el segmento de Resend.
 
 > Para enviar correos a cualquier persona en producción, Resend exige un dominio verificado. El remitente de prueba de Resend tiene destinatarios limitados.
 
-## Enviar el correo cuando abra la beta
+## Enviar el correo el día del lanzamiento
 
-El endpoint está protegido por `BETA_LAUNCH_SECRET`, exige una confirmación exacta y un `campaignId` único para evitar duplicados accidentales.
+Antes de este envío, sustituye `MESA_APP_URL` por la ficha real de Google Play.
+El endpoint está protegido por `MESA_LAUNCH_SECRET`, exige una confirmación
+exacta y un `campaignId` único para evitar duplicados accidentales.
 
 Envío inmediato:
 
 ```bash
 curl -X POST "https://tu-dominio.com/api/beta-launch" \
-  -H "Authorization: Bearer TU_BETA_LAUNCH_SECRET" \
+  -H "Authorization: Bearer TU_MESA_LAUNCH_SECRET" \
   -H "Content-Type: application/json" \
   -d '{
-    "confirmation": "ENVIAR BETA MESA",
-    "campaignId": "beta-android-2026"
+    "confirmation": "ENVIAR LANZAMIENTO MESA",
+    "campaignId": "android-launch-2026"
   }'
 ```
 
@@ -76,11 +82,11 @@ Envío programado:
 
 ```bash
 curl -X POST "https://tu-dominio.com/api/beta-launch" \
-  -H "Authorization: Bearer TU_BETA_LAUNCH_SECRET" \
+  -H "Authorization: Bearer TU_MESA_LAUNCH_SECRET" \
   -H "Content-Type: application/json" \
   -d '{
-    "confirmation": "ENVIAR BETA MESA",
-    "campaignId": "beta-android-2026",
+    "confirmation": "ENVIAR LANZAMIENTO MESA",
+    "campaignId": "android-launch-2026",
     "scheduledAt": "2026-09-01T10:00:00+02:00"
   }'
 ```
@@ -121,10 +127,12 @@ src/
 ## Protección incluida
 
 - Validación de email en cliente y servidor.
-- Campo trampa y tiempo mínimo contra bots básicos.
+- Campo trampa contra bots básicos sin bloquear el autocompletado del navegador.
 - Límite de tamaño de petición.
 - Idempotencia en el email de bienvenida.
-- Endpoint de lanzamiento protegido por secreto y confirmación.
+- Reactivación explícita de contactos que vuelven a suscribirse.
+- Endpoint de lanzamiento protegido por secreto, confirmación e idempotencia.
+- Enlace de baja individual en el correo masivo.
 - Cabeceras de seguridad básicas.
 - API de lanzamiento excluida de indexación.
 

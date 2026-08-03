@@ -27,7 +27,7 @@ export default function PrivacyPage() {
       <article className={styles.article}>
         <span className={styles.eyebrow}>Información clara, como debe ser</span>
         <h1>Privacidad de la lista de espera</h1>
-        <p className={styles.updated}>Última actualización: 31 de julio de 2026</p>
+        <p className={styles.updated}>Última actualización: 3 de agosto de 2026</p>
 
         <p className={styles.intro}>
           Esta política explica de forma sencilla qué ocurre con tu correo
@@ -63,8 +63,9 @@ export default function PrivacyPage() {
           <h2>3. Para qué lo usamos</h2>
           <p>
             Usaremos tu correo para confirmar que formas parte de la lista,
-            comunicarte la apertura de la beta y enviarte novedades
-            estrictamente relacionadas con tu acceso a MESA.
+            comunicarte la apertura de la beta, avisarte del lanzamiento
+            público y enviarte novedades estrictamente relacionadas con tu
+            acceso a MESA.
           </p>
         </section>
 

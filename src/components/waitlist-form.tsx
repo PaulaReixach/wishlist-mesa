@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import { ArrowRight, Check, LoaderCircle, Mail } from "lucide-react";
 import styles from "./waitlist-form.module.css";
 
@@ -11,16 +11,16 @@ type WaitlistFormProps = {
 type FormState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "success"; preview: boolean }
+  | {
+      status: "success";
+      preview: boolean;
+      emailSent: boolean;
+      alreadySubscribed: boolean;
+    }
   | { status: "error"; message: string };
 
 export function WaitlistForm({ variant = "hero" }: WaitlistFormProps) {
   const [state, setState] = useState<FormState>({ status: "idle" });
-  const startedAt = useRef(0);
-
-  useEffect(() => {
-    startedAt.current = Date.now();
-  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,13 +36,14 @@ export function WaitlistForm({ variant = "hero" }: WaitlistFormProps) {
         body: JSON.stringify({
           email: formData.get("email"),
           company: formData.get("company"),
-          startedAt: startedAt.current || undefined,
         }),
       });
 
       const payload = (await response.json()) as {
         ok?: boolean;
         preview?: boolean;
+        emailSent?: boolean;
+        alreadySubscribed?: boolean;
         message?: string;
       };
 
@@ -52,7 +53,12 @@ export function WaitlistForm({ variant = "hero" }: WaitlistFormProps) {
         );
       }
 
-      setState({ status: "success", preview: Boolean(payload.preview) });
+      setState({
+        status: "success",
+        preview: Boolean(payload.preview),
+        emailSent: Boolean(payload.emailSent),
+        alreadySubscribed: Boolean(payload.alreadySubscribed),
+      });
       form.reset();
     } catch (error) {
       setState({
@@ -76,11 +82,17 @@ export function WaitlistForm({ variant = "hero" }: WaitlistFormProps) {
           <Check size={20} strokeWidth={2.5} />
         </span>
         <span>
-          <strong>¡Ya tienes un sitio en la mesa!</strong>
+          <strong>
+            {state.alreadySubscribed
+              ? "¡Tu sitio ya estaba reservado!"
+              : "¡Ya tienes un sitio en la mesa!"}
+          </strong>
           <small>
             {state.preview
               ? "Modo local: conecta Resend para recibir el correo real."
-              : "Revisa tu bandeja de entrada. Te hemos enviado la bienvenida."}
+              : state.emailSent
+                ? "Revisa tu bandeja de entrada. Te hemos enviado la bienvenida."
+                : "Tu correo está guardado. La confirmación puede tardar unos minutos."}
           </small>
         </span>
       </div>

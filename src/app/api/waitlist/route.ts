@@ -5,6 +5,8 @@ import { welcomeEmailHtml, welcomeEmailText } from "@/lib/emails";
 
 export const runtime = "nodejs";
 
+type WaitlistResendClient = Pick<Resend, "contacts" | "emails">;
+
 const waitlistSchema = z.object({
   email: z
     .string()
@@ -13,14 +15,14 @@ const waitlistSchema = z.object({
     .email("Escribe un correo electrónico válido.")
     .max(254, "El correo es demasiado largo."),
   company: z.string().max(200).optional().default(""),
-  startedAt: z.number().int().positive().optional(),
 });
 
 function configured() {
   return Boolean(
     process.env.RESEND_API_KEY &&
       process.env.RESEND_SEGMENT_ID &&
-      process.env.RESEND_FROM_EMAIL,
+      process.env.RESEND_FROM_EMAIL &&
+      process.env.NEXT_PUBLIC_SITE_URL,
   );
 }
 
@@ -32,7 +34,10 @@ function isDuplicate(message: string, statusCode: number | null) {
   );
 }
 
-export async function POST(request: Request) {
+export async function handleWaitlist(
+  request: Request,
+  resendClient?: WaitlistResendClient,
+) {
   const contentLength = Number(request.headers.get("content-length") ?? 0);
 
   if (contentLength > 10_000) {
@@ -67,16 +72,26 @@ export async function POST(request: Request) {
     );
   }
 
-  const { email, company, startedAt } = parsed.data;
+  const { email, company } = parsed.data;
 
-  // Campo trampa y tiempo mínimo: respondemos con éxito sin procesar a los bots.
-  if (company || (startedAt && Date.now() - startedAt < 500)) {
-    return Response.json({ ok: true });
+  // El campo trampa permite descartar bots sin bloquear autocompletados legítimos.
+  if (company) {
+    return Response.json({
+      ok: true,
+      preview: false,
+      emailSent: false,
+      alreadySubscribed: false,
+    });
   }
 
   if (!configured()) {
     if (process.env.NODE_ENV === "development") {
-      return Response.json({ ok: true, preview: true });
+      return Response.json({
+        ok: true,
+        preview: true,
+        emailSent: false,
+        alreadySubscribed: false,
+      });
     }
 
     return Response.json(
@@ -89,7 +104,8 @@ export async function POST(request: Request) {
     );
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend =
+    resendClient ?? new Resend(process.env.RESEND_API_KEY as string);
   const segmentId = process.env.RESEND_SEGMENT_ID as string;
   const from = process.env.RESEND_FROM_EMAIL as string;
   const replyTo = process.env.RESEND_REPLY_TO;
@@ -100,6 +116,8 @@ export async function POST(request: Request) {
     unsubscribed: false,
     segments: [{ id: segmentId }],
   });
+
+  let alreadySubscribed = false;
 
   if (contactResult.error) {
     if (
@@ -114,6 +132,27 @@ export async function POST(request: Request) {
           ok: false,
           message:
             "No hemos podido guardar tu correo. Inténtalo de nuevo dentro de un momento.",
+        },
+        { status: 502 },
+      );
+    }
+
+    alreadySubscribed = true;
+
+    // La persona ha vuelto a dar su consentimiento: reactivamos el contacto
+    // antes de añadirlo al segmento por si se había dado de baja previamente.
+    const updateResult = await resend.contacts.update({
+      email,
+      unsubscribed: false,
+    });
+
+    if (updateResult.error) {
+      console.error("Waitlist contact update error:", updateResult.error.name);
+      return Response.json(
+        {
+          ok: false,
+          message:
+            "No hemos podido reactivar tu acceso. Inténtalo de nuevo dentro de un momento.",
         },
         { status: 502 },
       );
@@ -150,7 +189,7 @@ export async function POST(request: Request) {
       replyTo,
       subject: "Te hemos guardado un sitio en MESA",
       html: welcomeEmailHtml(),
-      text: welcomeEmailText,
+      text: welcomeEmailText(),
       tags: [{ name: "type", value: "waitlist-welcome" }],
     },
     { idempotencyKey: `mesa-waitlist-${hash}` },
@@ -158,15 +197,22 @@ export async function POST(request: Request) {
 
   if (emailResult.error) {
     console.error("Waitlist welcome error:", emailResult.error.name);
-    return Response.json(
-      {
-        ok: false,
-        message:
-          "Tu correo está guardado, pero la bienvenida no ha podido salir. Inténtalo de nuevo en unos minutos.",
-      },
-      { status: 502 },
-    );
+    return Response.json({
+      ok: true,
+      preview: false,
+      emailSent: false,
+      alreadySubscribed,
+    });
   }
 
-  return Response.json({ ok: true });
+  return Response.json({
+    ok: true,
+    preview: false,
+    emailSent: true,
+    alreadySubscribed,
+  });
+}
+
+export async function POST(request: Request) {
+  return handleWaitlist(request);
 }
