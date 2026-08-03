@@ -1,3 +1,6 @@
+# Créditos de imágenes
+
+Las fotografías de la landing se utilizan bajo la [licencia de Unsplash](https://unsplash.com/license).
 
 | Archivo | Fotografía | Autor | Publicación | Fuente |
 |---|---|---|---|---|
